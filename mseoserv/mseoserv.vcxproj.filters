@@ -13,5 +13,529 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\fwd">
+      <UniqueIdentifier>{0f4250be-6f29-4324-bca5-16eaba5b0867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\eoplus">
+      <UniqueIdentifier>{f0734b3c-8220-489b-a4ff-c991f9aa2cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\eoplus\fwd">
+      <UniqueIdentifier>{9db6ab00-9332-4cb1-8603-343c8c4354a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\commands">
+      <UniqueIdentifier>{55d85ca5-f3db-4c51-bf40-49d783276d5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\extra">
+      <UniqueIdentifier>{b1a3b862-2bc7-4237-ac0d-3d04fa532e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{7d1dc8d9-3913-4773-af78-967507390536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\commands">
+      <UniqueIdentifier>{7fb5f5d4-477d-4adc-9588-0d6d07bc7c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\eoplus">
+      <UniqueIdentifier>{c2d778ba-5644-481d-9613-fdc01f497621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\extra">
+      <UniqueIdentifier>{7ebc9abb-200b-426f-9643-4c5f99905f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handlers">
+      <UniqueIdentifier>{5500efe1-95a1-4475-ac99-d847fb7777e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{aa879aed-0db1-4796-8508-5bef3e3ee179}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arena.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="character.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="command_source.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="database_impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dialog.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eoclient.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eodata.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eoserv_config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eoserv_windows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="eoserver.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="guild.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hash.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="i18n.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nanohttp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="npc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="npc_data.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="packet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="party.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sln.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="socket.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="socket_impl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="world.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\arena.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\character.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\command_source.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\config.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\console.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\database.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\dialog.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\eoclient.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\eodata.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\eoplus.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\eoserver.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\guild.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\hook.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\i18n.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\map.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\nanohttp.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\npc.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\npc_data.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\packet.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\party.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\player.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\quest.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\sln.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\socket.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\timer.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="fwd\world.hpp">
+      <Filter>Header Files\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\context.hpp">
+      <Filter>Header Files\eoplus</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\lex.hpp">
+      <Filter>Header Files\eoplus</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\parse.hpp">
+      <Filter>Header Files\eoplus</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\fwd\context.hpp">
+      <Filter>Header Files\eoplus\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\fwd\lex.hpp">
+      <Filter>Header Files\eoplus\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="eoplus\fwd\parse.hpp">
+      <Filter>Header Files\eoplus\fwd</Filter>
+    </ClInclude>
+    <ClInclude Include="commands\commands.hpp">
+      <Filter>Header Files\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="extra\ntservice.hpp">
+      <Filter>Header Files\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="extra\seose_compat.hpp">
+      <Filter>Header Files\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="util\rpn.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\secure_string.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\variant.hpp">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="handlers\handlers.hpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="arena.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="command_source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eoclient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eodata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eoplus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eoserv_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="eoserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="guild.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="i18n.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nanohttp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="npc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="npc_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="party.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sln.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="socket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\admin.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\char_mod.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\commands.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\debug.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\info.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\map.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\moderation.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\server.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\warp.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="eoplus\context.cpp">
+      <Filter>Source Files\eoplus</Filter>
+    </ClCompile>
+    <ClCompile Include="eoplus\lex.cpp">
+      <Filter>Source Files\eoplus</Filter>
+    </ClCompile>
+    <ClCompile Include="eoplus\parse.cpp">
+      <Filter>Source Files\eoplus</Filter>
+    </ClCompile>
+    <ClCompile Include="extra\ntservice.cpp">
+      <Filter>Source Files\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="extra\seose_compat.cpp">
+      <Filter>Source Files\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Account.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\AdminInteract.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Attack.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Bank.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Barber.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Board.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Book.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Chair.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Character.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Chest.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Citizen.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Connection.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Door.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Emote.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Face.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Global.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Guild.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\handlers.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Init.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Internal.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Item.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Jukebox.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Locker.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Login.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Message.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Paperdoll.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Party.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Players.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Quest.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Refresh.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Shop.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Sit.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Spell.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\StatSkill.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Talk.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Trade.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Walk.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Warp.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Welcome.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="util\rpn.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\variant.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\winres.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
