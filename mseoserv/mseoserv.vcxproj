@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C7958199-9AC3-4381-BB23-3C78AEBC4F6E}</ProjectGuid>
+    <ProjectGuid>{81A4A7ED-EF54-4362-A1EB-69A20881B153}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mseoserv</RootNamespace>
   </PropertyGroup>
@@ -76,7 +76,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="delete.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
