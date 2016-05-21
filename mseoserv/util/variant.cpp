@@ -89,7 +89,7 @@ int variant::GetInt() const
 			break;
 
 		case type_string:
-			this->val_int = tdparse(this->val_string);
+			this->val_int = static_cast<int>(tdparse(this->val_string));
 			break;
 
 		case type_bool:
@@ -145,12 +145,12 @@ std::string variant::GetString() const
 	switch (this->type)
 	{
 		case type_int:
-			snprintf(buf, 1024, "%i", this->val_int);
+			_snprintf_s(buf, 1024, "%i", this->val_int);
 			this->val_string = buf;
 			break;
 
 		case type_float:
-			snprintf(buf, 1024, "%g", this->val_float);
+			_snprintf_s(buf, 1024, "%g", this->val_float);
 			this->val_string = buf;
 			break;
 
@@ -178,7 +178,7 @@ bool variant::GetBool() const
 	switch (this->type)
 	{
 		case type_int:
-			this->val_bool = static_cast<bool>(this->val_int);
+			this->val_bool = this->val_int != 0;
 			break;
 
 		case type_float:
@@ -186,7 +186,7 @@ bool variant::GetBool() const
 			break;
 
 		case type_string:
-			std::sscanf(this->val_string.c_str(), "%d", &intval);
+			sscanf_s(this->val_string.c_str(), "%d", &intval);
 			s = util::lowercase(s);
 			this->val_bool = (s == "yes" || s == "true" || s == "enabled" || intval != 0);
 			break;

@@ -29,8 +29,8 @@ class Database_Exception : public std::exception
 		const char *err;
 	public:
 		Database_Exception(const char *e) : err(e) {};
-		const char *error() const noexcept { return err; };
-		virtual const char *what() const noexcept { return "Database_Exception"; }
+		virtual const char *what() const { return "Database_Exception"; }
+		const char *error() const { return err; };
 };
 
 /**
@@ -39,7 +39,7 @@ class Database_Exception : public std::exception
 class Database_OpenFailed : public Database_Exception
 {
 	public: Database_OpenFailed(const char *e) : Database_Exception(e) {}
-	const char *what() const noexcept { return "Database_OpenFailed"; }
+	const char *what() const { return "Database_OpenFailed"; }
 };
 
 /**
@@ -48,7 +48,7 @@ class Database_OpenFailed : public Database_Exception
 class Database_QueryFailed : public Database_Exception
 {
 	public: Database_QueryFailed(const char *e) : Database_Exception(e) {}
-	const char *what() const noexcept { return "Database_QueryFailed"; }
+	const char *what() const { return "Database_QueryFailed"; }
 };
 
 /**

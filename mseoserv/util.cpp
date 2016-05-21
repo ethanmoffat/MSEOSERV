@@ -286,9 +286,9 @@ struct rand_init
 		}
 	}
 
-	void init() const
+	static void init()
 	{
-		std::srand(std::time(0));
+		std::srand(static_cast<int>(std::time(nullptr)));
 	}
 };
 
@@ -413,7 +413,7 @@ int text_max_word_width(const std::string& string)
 	{
 		if (string[i] == ' ')
 		{
-			max_length = std::max(max_length, length);
+			max_length = max(max_length, length);
 			length = 0;
 		}
 		else
@@ -422,7 +422,7 @@ int text_max_word_width(const std::string& string)
 		}
 	}
 
-	return std::max(max_length, length);
+	return max(max_length, length);
 }
 
 std::string text_cap(const std::string& string, int width, const std::string& elipses)

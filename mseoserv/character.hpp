@@ -148,7 +148,7 @@ class Character : public Command_Source
 			HideWarpExplicit      = 0x100000
 		};
 
-		static constexpr int HideAll = 0x1F;
+		static const int HideAll = 0x1F;
 
 		enum NoInteractFlag
 		{
@@ -159,7 +159,7 @@ class Character : public Command_Source
 			NoInteractCharMod = 0x10
 		};
 
-		static constexpr int NoInteractAll = 0xFFFF;
+		static const int NoInteractAll = 0xFFFF;
 
 		int login_time;
 		bool online;
@@ -278,11 +278,11 @@ class Character : public Command_Source
 
 		Character(std::string name, World *);
 
-		bool IsHideInvisible() const { return hidden & HideInvisible; }
-		bool IsHideOnline() const { return hidden & HideOnline; }
-		bool IsHideNpc() const { return hidden & HideNpc; }
-		bool IsHideAdmin() const { return hidden & HideAdmin; }
-		bool IsHideWarp() const { return hidden & HideWarp; }
+		bool IsHideInvisible() const { return (hidden & HideInvisible) != 0; }
+		bool IsHideOnline() const { return (hidden & HideOnline) != 0; }
+		bool IsHideNpc() const { return (hidden & HideNpc) != 0; }
+		bool IsHideAdmin() const { return (hidden & HideAdmin) != 0; }
+		bool IsHideWarp() const { return (hidden & HideWarp) != 0; }
 
 		bool CanInteractItems() const { return !(nointeract & NoInteractItems); }
 		bool CanInteractCombat() const { return !(nointeract & NoInteractCombat); }

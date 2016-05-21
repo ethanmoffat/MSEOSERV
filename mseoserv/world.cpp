@@ -94,8 +94,8 @@ void world_recover(void *world_void)
 
 		if (character->hp != character->maxhp)
 		{
-			if (character->sitting != SIT_STAND) character->hp += character->maxhp * double(world->config["SitHPRecoverRate"]);
-			else                                 character->hp += character->maxhp * double(world->config["HPRecoverRate"]);
+			if (character->sitting != SIT_STAND) character->hp += static_cast<short>(character->maxhp * double(world->config["SitHPRecoverRate"]));
+			else                                 character->hp += static_cast<short>(character->maxhp * double(world->config["HPRecoverRate"]));
 
 			character->hp = std::min(character->hp, character->maxhp);
 			updated = true;
@@ -108,8 +108,8 @@ void world_recover(void *world_void)
 
 		if (character->tp != character->maxtp)
 		{
-			if (character->sitting != SIT_STAND) character->tp += character->maxtp * double(world->config["SitTPRecoverRate"]);
-			else                                 character->tp += character->maxtp * double(world->config["TPRecoverRate"]);
+			if (character->sitting != SIT_STAND) character->tp += static_cast<short>(character->maxtp * double(world->config["SitTPRecoverRate"]));
+			else                                 character->tp += static_cast<short>(character->maxtp * double(world->config["TPRecoverRate"]));
 
 			character->tp = std::min(character->tp, character->maxtp);
 			updated = true;
@@ -136,7 +136,7 @@ void world_npc_recover(void *world_void)
 		{
 			if (npc->alive && npc->hp < npc->ENF().hp)
 			{
-				npc->hp += npc->ENF().hp * double(world->config["NPCRecoverRate"]);
+				npc->hp += static_cast<int>(npc->ENF().hp * double(world->config["NPCRecoverRate"]));
 
 				npc->hp = std::min(npc->hp, npc->ENF().hp);
 			}
@@ -248,7 +248,7 @@ void world_timed_save(void *world_void)
 	{
 		world->CommitDB();
 	}
-	catch (Database_Exception& e)
+	catch (Database_Exception&)
 	{
 		Console::Wrn("Database commit failed - no data was saved!");
 		world->db.Rollback();
@@ -343,7 +343,7 @@ void World::UpdateConfig()
 		{
 			this->CommitDB();
 		}
-		catch (Database_Exception& e)
+		catch (Database_Exception&)
 		{
 			Console::Wrn("Database commit failed - no data was saved!");
 			this->db.Rollback();
@@ -1153,10 +1153,10 @@ Map *World::GetMap(short id)
 
 const NPC_Data* World::GetNpcData(short id) const
 {
-	if (id >= 0 && id < npc_data.size())
+	if (id >= 0 && static_cast<unsigned>(id) < npc_data.size())
 		return npc_data[id].get();
-	else
-		return npc_data[0].get();
+	
+	return npc_data[0].get();
 }
 
 Home *World::GetHome(const Character *character) const
@@ -1219,7 +1219,7 @@ Character *World::CreateCharacter(Player *player, std::string name, Gender gende
 	{
 		using namespace std;
 		startmapinfo = ", `map`, `x`, `y`";
-		snprintf(buffer, 1024, ",%i,%i,%i", static_cast<int>(this->config["StartMap"]), static_cast<int>(this->config["StartX"]), static_cast<int>(this->config["StartY"]));
+		_snprintf_s(buffer, 1024, ",%i,%i,%i", static_cast<int>(this->config["StartMap"]), static_cast<int>(this->config["StartX"]), static_cast<int>(this->config["StartY"]));
 		startmapval = buffer;
 	}
 
