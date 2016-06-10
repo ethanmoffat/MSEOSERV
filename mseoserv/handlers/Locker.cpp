@@ -9,7 +9,6 @@
 #include "../character.hpp"
 #include "../config.hpp"
 #include "../eodata.hpp"
-#include "../eoserver.hpp"
 #include "../map.hpp"
 #include "../packet.hpp"
 #include "../world.hpp"
@@ -17,7 +16,6 @@
 #include "../util.hpp"
 
 #include <algorithm>
-#include <cstddef>
 
 namespace Handlers
 {
@@ -31,13 +29,13 @@ static PacketBuilder add_common(Character *character, short item, int amount)
 	PacketBuilder reply(PACKET_LOCKER, PACKET_REPLY, 8 + character->bank.size() * 5);
 	reply.AddShort(item);
 	reply.AddInt(character->HasItem(item));
-	reply.AddChar(character->weight);
-	reply.AddChar(character->maxweight);
+	reply.AddChar(static_cast<unsigned char>(character->weight));
+	reply.AddChar(static_cast<unsigned char>(character->maxweight));
 
-	UTIL_FOREACH(character->bank, item)
+	UTIL_FOREACH(character->bank, bankItem)
 	{
-		reply.AddShort(item.id);
-		reply.AddThree(item.amount);
+		reply.AddShort(bankItem.id);
+		reply.AddThree(bankItem.amount);
 	}
 
 	return reply;
@@ -57,7 +55,7 @@ void Locker_Add(Character *character, PacketReader &reader)
 	if (amount <= 0) return;
 	if (character->HasItem(item) < amount) return;
 
-	std::size_t lockermax = static_cast<int>(character->world->config["BaseBankSize"]) + character->bankmax * static_cast<int>(character->world->config["BankSizeStep"]);
+	size_t lockermax = static_cast<int>(character->world->config["BaseBankSize"]) + character->bankmax * static_cast<int>(character->world->config["BankSizeStep"]);
 
 	if (util::path_length(character->x, character->y, x, y) <= 1)
 	{
@@ -130,18 +128,18 @@ void Locker_Take(Character *character, PacketReader &reader)
 					PacketBuilder reply(PACKET_LOCKER, PACKET_GET, 7 + character->bank.size() * 5);
 					reply.AddShort(item);
 					reply.AddThree(taken);
-					reply.AddChar(character->weight);
-					reply.AddChar(character->maxweight);
+					reply.AddChar(static_cast<unsigned char>(character->weight));
+					reply.AddChar(static_cast<unsigned char>(character->maxweight));
 
 					it->amount -= taken;
 
 					if (it->amount <= 0)
 						character->bank.erase(it);
 
-					UTIL_FOREACH(character->bank, item)
+					UTIL_FOREACH(character->bank, bankItem)
 					{
-						reply.AddShort(item.id);
-						reply.AddThree(item.amount);
+						reply.AddShort(bankItem.id);
+						reply.AddThree(bankItem.amount);
 					}
 					character->Send(reply);
 

@@ -23,7 +23,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "platform.h"
 #include "version.h"
 
 #ifdef WIN32
@@ -31,8 +30,8 @@
 #include "extra/ntservice.hpp"
 #endif // WIN32
 
-volatile std::sig_atomic_t eoserv_sig_abort = false;
-volatile std::sig_atomic_t eoserv_sig_rehash = false;
+volatile sig_atomic_t eoserv_sig_abort = false;
+volatile sig_atomic_t eoserv_sig_rehash = false;
 volatile bool eoserv_running = true;
 
 #ifdef SIGHUP
@@ -70,7 +69,7 @@ static void eoserv_crash(int signal)
 	std::signal(signal, SIG_DFL);
 	std::raise(signal);
 #else // DEBUG
-	std::exit(1);
+	exit(1);
 #endif // DEBUG
 }
 #endif // DEBUG
@@ -99,7 +98,7 @@ static void exception_test() throw()
 	{
 		throw std::runtime_error("You cannot run this program. Exception handling is working incorrectly.");
 	}
-	catch (std::exception& e)
+	catch (std::exception)
 	{
 		// Ignore
 	}
@@ -118,7 +117,8 @@ int eoserv_main(int argc, char *argv[])
 	(void)argv;
 
 	// Type checks
-	if (!std::numeric_limits<char>::is_signed) Console::Wrn("char is not signed, correct operation of the server cannot be guaranteed.");
+	if (!std::numeric_limits<char>::is_signed)
+		Console::Wrn("char is not signed, correct operation of the server cannot be guaranteed.");
 
 	exception_test();
 
@@ -145,9 +145,9 @@ int eoserv_main(int argc, char *argv[])
 		if (mode == "service")
 		{
 			char cwd[MAX_PATH];
-			GetModuleFileName(0, cwd, MAX_PATH);
+			GetModuleFileName(nullptr, cwd, MAX_PATH);
 
-			char *lastslash = 0;
+			char *lastslash = nullptr;
 
 			for (char *p = cwd; *p != '\0'; ++p)
 			{
@@ -169,25 +169,26 @@ int eoserv_main(int argc, char *argv[])
 		{
 			if (service_install(name.c_str()))
 			{
-				if (!silent) MessageBox(0, "Service installed.", "EOSERV", MB_OK);
+				if (!silent)
+					MessageBox(nullptr, "Service installed.", "EOSERV", MB_OK);
 				return 0;
 			}
-			else
-			{
-				if (!silent) MessageBox(0, OSErrorString(), "EOSERV", MB_OK);
-				return 1;
-			}
+			
+			if (!silent)
+				MessageBox(nullptr, OSErrorString(), "EOSERV", MB_OK);
+
+			return 1;
 		}
 		else if (mode == "uninstall")
 		{
 			if (service_uninstall(name.c_str()))
 			{
-				if (!silent) MessageBox(0, "Service uninstalled.", "EOSERV", MB_OK);
+				if (!silent) MessageBox(nullptr, "Service uninstalled.", "EOSERV", MB_OK);
 				return 0;
 			}
 			else
 			{
-				if (!silent) MessageBox(0, OSErrorString(), "EOSERV", MB_OK);
+				if (!silent) MessageBox(nullptr, OSErrorString(), "EOSERV", MB_OK);
 				return 1;
 			}
 		}
@@ -200,21 +201,21 @@ int eoserv_main(int argc, char *argv[])
 	std::signal(SIGHUP, eoserv_rehash);
 #endif // SIGHUP
 
-	std::signal(SIGABRT, eoserv_terminate);
-	std::signal(SIGTERM, eoserv_terminate);
-	std::signal(SIGINT, eoserv_terminate);
+	signal(SIGABRT, eoserv_terminate);
+	signal(SIGTERM, eoserv_terminate);
+	signal(SIGINT, eoserv_terminate);
 
 #ifndef DEBUG
-	std::signal(SIGSEGV, eoserv_crash);
-	std::signal(SIGFPE, eoserv_crash);
+	signal(SIGSEGV, eoserv_crash);
+	signal(SIGFPE, eoserv_crash);
 #ifdef SIGBUS
-	std::signal(SIGBUS, eoserv_crash);
+	signal(SIGBUS, eoserv_crash);
 #endif // SIGBUS
-	std::signal(SIGILL, eoserv_crash);
+	signal(SIGILL, eoserv_crash);
 #endif
 
 #ifdef WIN32
-	eoserv_close_event = CreateEvent(NULL, FALSE, FALSE, NULL);
+	eoserv_close_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
 	SetConsoleTitle("EOSERV");
 
@@ -235,7 +236,7 @@ int eoserv_main(int argc, char *argv[])
 		{
 			config.Read("config.ini");
 		}
-		catch (std::runtime_error &e)
+		catch (std::runtime_error)
 		{
 			Console::Wrn("Could not load config.ini - using defaults");
 		}
@@ -244,7 +245,7 @@ int eoserv_main(int argc, char *argv[])
 		{
 			aconfig.Read("admin.ini");
 		}
-		catch (std::runtime_error &e)
+		catch (std::runtime_error)
 		{
 			Console::Err("Could not load admin.ini - using defaults");
 		}
@@ -254,7 +255,7 @@ int eoserv_main(int argc, char *argv[])
 
 		Console::Styled[1] = Console::Styled[0] = config["StyleConsole"];
 
-		std::puts("\
+		puts("\
                           ___ ___  ___ ___ _____   __\n\
    EOSERV Version " EOSERV_VERSION_STRING "  | __/ _ \\/ __| __| _ \\ \\ / /    http://eoserv.net/\n\
 =========================| _| (_) \\__ \\ _||   /\\ ` /===========================\n\
@@ -265,26 +266,32 @@ int eoserv_main(int argc, char *argv[])
 #endif
 
 		{
-			std::time_t rawtime;
+			time_t rawtime;
 			char timestr[256];
-			std::time(&rawtime);
-			std::strftime(timestr, 256, "%c", std::localtime(&rawtime));
+			time(&rawtime);
+
+			tm time = {};
+			localtime_s(&time, &rawtime);
+			strftime(timestr, 256, "%c", &time);
 
 			std::string logerr = config["LogErr"];
 			if (!logerr.empty() && logerr.compare("-") != 0)
 			{
 				Console::Out("Redirecting errors to '%s'...", logerr.c_str());
-				if (!std::freopen(logerr.c_str(), "a", stderr))
+
+				FILE * reopenedFile = nullptr;
+				freopen_s(&reopenedFile, logerr.c_str(), "a", stderr);
+				if (!reopenedFile)
 				{
 					Console::Err("Failed to redirect errors.");
 				}
 				else
 				{
 					Console::Styled[Console::STREAM_ERR] = false;
-					std::fprintf(stderr, "\n\n--- %s ---\n\n", timestr);
+					fprintf(stderr, "\n\n--- %s ---\n\n", timestr);
 				}
 
-				if (std::setvbuf(stderr, 0, _IONBF, 0) != 0)
+				if (setvbuf(stderr, nullptr, _IONBF, 0) != 0)
 				{
 					Console::Wrn("Failed to change stderr buffer settings");
 				}
@@ -293,18 +300,21 @@ int eoserv_main(int argc, char *argv[])
 			std::string logout = config["LogOut"];
 			if (!logout.empty() && logout.compare("-") != 0)
 			{
+				FILE * reopenedFile = nullptr;
+				freopen_s(&reopenedFile, logout.c_str(), "a", stdout);
 				Console::Out("Redirecting output to '%s'...", logout.c_str());
-				if (!std::freopen(logout.c_str(), "a", stdout))
+				
+				if (!reopenedFile)
 				{
 					Console::Err("Failed to redirect output.");
 				}
 				else
 				{
 					Console::Styled[Console::STREAM_OUT] = false;
-					std::printf("\n\n--- %s ---\n\n", timestr);
+					printf("\n\n--- %s ---\n\n", timestr);
 				}
 
-				if (std::setvbuf(stdout, 0, _IONBF, 0) != 0)
+				if (setvbuf(stdout, nullptr, _IONBF, 0) != 0)
 				{
 					Console::Wrn("Failed to change stdout buffer settings");
 				}
@@ -356,7 +366,7 @@ int eoserv_main(int argc, char *argv[])
 				{
 					Console::Err("Could not find or install tables.");
 					Console::Err(e.error());
-					std::exit(1);
+					exit(1);
 				}
 
 				try_install = true;
@@ -377,7 +387,7 @@ int eoserv_main(int argc, char *argv[])
 				{
 					Console::Err("Could not install tables.");
 					Console::Err(e.error());
-					std::exit(1);
+					exit(1);
 				}
 			}
 		}
@@ -435,7 +445,7 @@ int eoserv_main(int argc, char *argv[])
 #endif // DEBUG_EXCEPTIONS
 
 #ifdef WIN32
-	::SetEvent(eoserv_close_event);
+	SetEvent(eoserv_close_event);
 #endif // WIN32
 
 	return 0;

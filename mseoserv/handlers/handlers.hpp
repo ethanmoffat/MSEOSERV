@@ -73,7 +73,7 @@ class packet_handler
 		double delay;
 		void (*f)();
 
-		packet_handler(FunctionType fn_type = Invalid, void_fn_t f = 0, unsigned short allow_states = 0, double delay = 0.0)
+		packet_handler(FunctionType fn_type = Invalid, void_fn_t f = nullptr, unsigned short allow_states = 0, double delay = 0.0)
 			: fn_type(fn_type)
 			, allow_states(allow_states)
 			, delay(delay)
