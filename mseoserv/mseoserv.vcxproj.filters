@@ -377,16 +377,10 @@
     <ClCompile Include="commands\info.cpp">
       <Filter>Source Files\commands</Filter>
     </ClCompile>
-    <ClCompile Include="commands\map.cpp">
-      <Filter>Source Files\commands</Filter>
-    </ClCompile>
     <ClCompile Include="commands\moderation.cpp">
       <Filter>Source Files\commands</Filter>
     </ClCompile>
     <ClCompile Include="commands\server.cpp">
-      <Filter>Source Files\commands</Filter>
-    </ClCompile>
-    <ClCompile Include="commands\warp.cpp">
       <Filter>Source Files\commands</Filter>
     </ClCompile>
     <ClCompile Include="eoplus\context.cpp">
@@ -428,9 +422,6 @@
     <ClCompile Include="handlers\Chair.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
-    <ClCompile Include="handlers\Character.cpp">
-      <Filter>Source Files\handlers</Filter>
-    </ClCompile>
     <ClCompile Include="handlers\Chest.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
@@ -450,9 +441,6 @@
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
     <ClCompile Include="handlers\Global.cpp">
-      <Filter>Source Files\handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="handlers\Guild.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
     <ClCompile Include="handlers\handlers.cpp">
@@ -482,13 +470,7 @@
     <ClCompile Include="handlers\Paperdoll.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
-    <ClCompile Include="handlers\Party.cpp">
-      <Filter>Source Files\handlers</Filter>
-    </ClCompile>
     <ClCompile Include="handlers\Players.cpp">
-      <Filter>Source Files\handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="handlers\Quest.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
     <ClCompile Include="handlers\Refresh.cpp">
@@ -526,6 +508,24 @@
     </ClCompile>
     <ClCompile Include="util\variant.cpp">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Character_Handler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\map_commands.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="commands\warp_commands.cpp">
+      <Filter>Source Files\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Guild_Handler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Party_Handler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Quest_Handler.cpp">
+      <Filter>Source Files\handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

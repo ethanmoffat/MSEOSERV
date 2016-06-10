@@ -159,10 +159,10 @@
     <ClCompile Include="commands\commands.cpp" />
     <ClCompile Include="commands\debug.cpp" />
     <ClCompile Include="commands\info.cpp" />
-    <ClCompile Include="commands\map.cpp" />
+    <ClCompile Include="commands\map_commands.cpp" />
     <ClCompile Include="commands\moderation.cpp" />
     <ClCompile Include="commands\server.cpp" />
-    <ClCompile Include="commands\warp.cpp" />
+    <ClCompile Include="commands\warp_commands.cpp" />
     <ClCompile Include="command_source.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="console.cpp" />
@@ -187,7 +187,7 @@
     <ClCompile Include="handlers\Board.cpp" />
     <ClCompile Include="handlers\Book.cpp" />
     <ClCompile Include="handlers\Chair.cpp" />
-    <ClCompile Include="handlers\Character.cpp" />
+    <ClCompile Include="handlers\Character_Handler.cpp" />
     <ClCompile Include="handlers\Chest.cpp" />
     <ClCompile Include="handlers\Citizen.cpp" />
     <ClCompile Include="handlers\Connection.cpp" />
@@ -195,7 +195,7 @@
     <ClCompile Include="handlers\Emote.cpp" />
     <ClCompile Include="handlers\Face.cpp" />
     <ClCompile Include="handlers\Global.cpp" />
-    <ClCompile Include="handlers\Guild.cpp" />
+    <ClCompile Include="handlers\Guild_Handler.cpp" />
     <ClCompile Include="handlers\handlers.cpp" />
     <ClCompile Include="handlers\Init.cpp" />
     <ClCompile Include="handlers\Internal.cpp" />
@@ -205,9 +205,9 @@
     <ClCompile Include="handlers\Login.cpp" />
     <ClCompile Include="handlers\Message.cpp" />
     <ClCompile Include="handlers\Paperdoll.cpp" />
-    <ClCompile Include="handlers\Party.cpp" />
+    <ClCompile Include="handlers\Party_Handler.cpp" />
     <ClCompile Include="handlers\Players.cpp" />
-    <ClCompile Include="handlers\Quest.cpp" />
+    <ClCompile Include="handlers\Quest_Handler.cpp" />
     <ClCompile Include="handlers\Refresh.cpp" />
     <ClCompile Include="handlers\Shop.cpp" />
     <ClCompile Include="handlers\Sit.cpp" />
