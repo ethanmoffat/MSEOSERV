@@ -356,7 +356,6 @@ template <typename T> static T GetRow(std::unordered_map<std::string, util::vari
 Character::Character(std::string name, World *world)
 	: muted_until(0)
 	, bot(false)
-	, cosmetic_paperdoll{{}}
 	, world(world)
 	, display_str(this->world->config["UseAdjustedStats"] ? adj_str : str)
 	, display_intl(this->world->config["UseAdjustedStats"] ? adj_intl : intl)
@@ -365,6 +364,8 @@ Character::Character(std::string name, World *world)
 	, display_con(this->world->config["UseAdjustedStats"] ? adj_con : con)
 	, display_cha(this->world->config["UseAdjustedStats"] ? adj_cha : cha)
 {
+	cosmetic_paperdoll = {{}};
+
 	{
 		std::vector<std::string> bot_characters = BotListUnserialize(this->world->config["BotCharacters"]);
 		auto bot_it = std::find(UTIL_CRANGE(bot_characters), util::lowercase(name));
