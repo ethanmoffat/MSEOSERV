@@ -55,7 +55,7 @@ const char *OSErrorString()
 	if (!FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, GetLastError(), 0, ErrorBuf, 1023, 0))
 	{
 		using namespace std;
-		snprintf(ErrorBuf, 1024, "Unknown error %i", error);
+		_snprintf_s(ErrorBuf, 1024, "Unknown error %i", error);
 	}
 	else
 	{
@@ -157,7 +157,7 @@ IPAddress &IPAddress::SetString(const char *str_addr)
 IPAddress &IPAddress::SetString(std::string str_addr)
 {
 	unsigned int io1, io2, io3, io4;
-	std::sscanf(str_addr.c_str(), "%u.%u.%u.%u", &io1, &io2, &io3, &io4);
+	sscanf_s(str_addr.c_str(), "%u.%u.%u.%u", &io1, &io2, &io3, &io4);
 	unsigned char o1 = io1, o2 = io2, o3 = io3, o4 = io4;
 	this->address = o1 << 24 | o2 << 16 | o3 << 8 | o4;
 	return *this;
@@ -191,7 +191,7 @@ std::string IPAddress::GetString() const
 	o2 = (this->address & 0x00FF0000) >> 16;
 	o3 = (this->address & 0x0000FF00) >> 8;
 	o4 = this->address & 0x000000FF;
-	std::sprintf(buf, "%u.%u.%u.%u", o1, o2, o3, o4);
+	sprintf_s(buf, "%u.%u.%u.%u", o1, o2, o3, o4);
 	return std::string(buf);
 }
 
@@ -338,7 +338,7 @@ void Client::Bind(const IPAddress &addr, uint16_t port)
 
 std::string Client::Recv(std::size_t length)
 {
-	length = std::min(length, this->recv_buffer_used);
+	length = min(length, this->recv_buffer_used);
 
 	std::string ret(length, char());
 
@@ -378,7 +378,7 @@ bool Client::DoRecv()
 {
 	char buf[8192];
 
-	const int to_recv = std::min(this->recv_buffer.length() - this->recv_buffer_used, sizeof(buf));
+	const int to_recv = min(this->recv_buffer.length() - this->recv_buffer_used, sizeof(buf));
 
 	if (to_recv == 0)
 		return false;
@@ -413,7 +413,7 @@ bool Client::DoSend()
 	const std::size_t gpos = this->send_buffer_gpos;
 
 	std::size_t to_send;
-	for (to_send = 0; to_send < std::min(this->send_buffer_used, sizeof(buf)); ++to_send)
+	for (to_send = 0; to_send < min(this->send_buffer_used, sizeof(buf)); ++to_send)
 	{
 		this->send_buffer_gpos = (this->send_buffer_gpos + 1) & mask;
 		buf[to_send] = this->send_buffer[this->send_buffer_gpos];
