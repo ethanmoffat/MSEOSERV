@@ -20,12 +20,11 @@
 
 #include <cmath>
 #include <stdexcept>
-#include <string>
 #include <vector>
 
 #include "version.h"
 
-#include <pthread.h>
+#include <thread>
 
 struct SLN_Request
 {
@@ -39,9 +38,9 @@ struct SLN_Request
 	bool timeout;
 
 	SLN_Request()
-		: sln(0)
+		: sln(nullptr)
 		, period(600)
-		, http(0)
+		, http(nullptr)
 		, timeout(false)
 	{ }
 
@@ -100,14 +99,18 @@ void SLN::Request()
 	request->host = std::string(this->server->world->config["Host"]);
 	request->period = int(this->server->world->config["SLNPeriod"]);
 
-	static pthread_t thread;
+	try
+	{
+		static std::thread thread(SLN::RequestThread, request);
+		if (!thread.native_handle())
+			throw std::runtime_error("Failed to create SLN request thread");
 
-	if (pthread_create(&thread, 0, SLN::RequestThread, request) != 0)
+		thread.detach();
+	}
+	catch (...)
 	{
 		throw std::runtime_error("Failed to create SLN request thread");
 	}
-
-	pthread_detach(thread);
 }
 
 void* SLN::RequestThread(void* void_request)
@@ -158,7 +161,7 @@ void* SLN::RequestThread(void* void_request)
 			}
 		}
 
-		request->period -= std::floor(clock.GetTime() - start_adjust_time);
+		request->period -= static_cast<int>(std::floor(clock.GetTime() - start_adjust_time));
 
 		if (request->period < 45 || request->timeout)
 			request->period = 45;
