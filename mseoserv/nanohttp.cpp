@@ -41,7 +41,7 @@ HTTP::HTTP(std::string host, unsigned short port, std::string path, const IPAddr
 				client->Bind(outgoing, util::rand(49152, 65535));
 				break;
 			}
-			catch (Socket_BindFailed &e)
+			catch (Socket_BindFailed)
 			{
 				if (++retry >= 10)
 					throw;
@@ -161,8 +161,7 @@ std::string HTTP::URLEncode(std::string raw)
 		}
 		else
 		{
-			using namespace std;
-			snprintf(buf, 3, "%02x", c);
+			_snprintf_s(buf, 3, "%02x", c);
 			encoded += std::string("%") + std::string(buf, 2);
 		}
 	}
