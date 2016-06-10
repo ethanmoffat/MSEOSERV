@@ -54,7 +54,7 @@ struct Validation_Error : public EOPlus::Runtime_Error
 			return state_;
 		}
 
-		~Validation_Error() noexcept
+		~Validation_Error()
 		{
 
 		}
@@ -326,7 +326,7 @@ void Quest::Load()
 	char namebuf[6];
 
 	std::string filename = this->world->config["QuestDir"];
-	std::sprintf(namebuf, "%05i", this->id);
+	sprintf_s(namebuf, "%05i", this->id);
 	filename += namebuf;
 	filename += ".eqf";
 
@@ -615,8 +615,8 @@ bool Quest_Context::DoAction(const EOPlus::Action& action)
 				builder.AddShort(0); // UID
 				builder.AddShort(id);
 				builder.AddThree(amount);
-				builder.AddChar(this->character->weight);
-				builder.AddChar(this->character->maxweight);
+				builder.AddChar(static_cast<unsigned char>(this->character->weight));
+				builder.AddChar(static_cast<unsigned char>(this->character->maxweight));
 				this->character->Send(builder);
 			}
 			else
@@ -624,7 +624,7 @@ bool Quest_Context::DoAction(const EOPlus::Action& action)
 				PacketBuilder builder(PACKET_ITEM, PACKET_OBTAIN, 6);
 				builder.AddShort(id);
 				builder.AddThree(amount);
-				builder.AddChar(this->character->weight);
+				builder.AddChar(static_cast<unsigned char>(this->character->weight));
 				this->character->Send(builder);
 			}
 		}
@@ -639,7 +639,7 @@ bool Quest_Context::DoAction(const EOPlus::Action& action)
 			PacketBuilder builder(PACKET_ITEM, PACKET_KICK, 7);
 			builder.AddShort(id);
 			builder.AddInt(this->character->HasItem(id));
-			builder.AddChar(this->character->weight);
+			builder.AddChar(static_cast<unsigned char>(this->character->weight));
 			this->character->Send(builder);
 		}
 	}
@@ -753,7 +753,7 @@ static bool rpn_char_eval(std::stack<util::variant>&& s, Character* character)
 {
 	std::unordered_map<std::string, double> formula_vars;
 	character->FormulaVars(formula_vars);
-	return bool(rpn_eval(s, formula_vars));
+	return rpn_eval(s, formula_vars) != 0;
 }
 
 static bool rpn_char_eval(std::deque<util::variant>&& dq, Character* character)
