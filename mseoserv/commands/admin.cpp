@@ -12,7 +12,6 @@
 #include "../eodata.hpp"
 #include "../i18n.hpp"
 #include "../map.hpp"
-#include "../npc.hpp"
 #include "../packet.hpp"
 #include "../player.hpp"
 #include "../world.hpp"
@@ -188,12 +187,12 @@ void Duty(const std::vector<std::string>& arguments, Character* from)
 
 		if (!world->config["OldVersionCompat"] && player->client->version < 28)
 		{
-			reply.AddChar(swap->display_str);
-			reply.AddChar(swap->display_wis);
-			reply.AddChar(swap->display_intl);
-			reply.AddChar(swap->display_agi);
-			reply.AddChar(swap->display_con);
-			reply.AddChar(swap->display_cha);
+			reply.AddChar(static_cast<unsigned char>(swap->display_str));
+			reply.AddChar(static_cast<unsigned char>(swap->display_wis));
+			reply.AddChar(static_cast<unsigned char>(swap->display_intl));
+			reply.AddChar(static_cast<unsigned char>(swap->display_agi));
+			reply.AddChar(static_cast<unsigned char>(swap->display_con));
+			reply.AddChar(static_cast<unsigned char>(swap->display_cha));
 		}
 		else
 		{
@@ -249,8 +248,8 @@ void Duty(const std::vector<std::string>& arguments, Character* from)
 		}
 
 		// ??
-		reply.AddChar(swap->weight); // Weight
-		reply.AddChar(swap->maxweight); // Max Weight
+		reply.AddChar(static_cast<unsigned char>(swap->weight)); // Weight
+		reply.AddChar(static_cast<unsigned char>(swap->maxweight)); // Max Weight
 		UTIL_FOREACH(swap->inventory, item)
 		{
 			reply.AddShort(item.id);
