@@ -10,23 +10,22 @@
 #include "util.hpp"
 #include "util/variant.hpp"
 
-#include <cstddef>
 #include <cstdio>
 #include <stdexcept>
 #include <string>
 
 void Config::Read(const std::string& filename)
 {
-	std::FILE *fh;
+	FILE *fh = nullptr;
 	char buf[Config::MaxLineLength];
 	std::string line;
 	std::string key;
 	std::string val;
-	std::size_t eqloc;
+	size_t eqloc;
 
 	this->filename = filename;
 
-	fh = std::fopen(filename.c_str(), "rt");
+	fopen_s(&fh, filename.c_str(), "rt");
 	if (!fh)
 	{
 		std::string err = "Configuration file not found: " + filename;
@@ -82,7 +81,7 @@ void Config::Read(const std::string& filename)
 			{
 				this->Read(val);
 			}
-			catch (std::runtime_error &e)
+			catch (std::runtime_error)
 			{
 #ifndef DEBUG
 				if (key != "INCLUDE_NOWARN")
