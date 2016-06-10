@@ -17,7 +17,6 @@
 
 #include "../util.hpp"
 
-#include <cstddef>
 #include <deque>
 #include <memory>
 #include <utility>
@@ -170,7 +169,7 @@ void Quest_Accept(Character *character, PacketReader &reader)
 
 		if (quest && !quest->GetQuest()->Disabled())
 		{
-			bool result = action ? quest->DialogInput(action) : quest->TalkedNPC(vendor_id);
+			bool result = action ? quest->DialogInput(action) : quest->TalkedNPC(static_cast<char>(vendor_id));
 
 			// Run dialog for next quest state
 			quest = character->GetQuest(quest_id);

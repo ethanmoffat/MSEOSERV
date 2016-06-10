@@ -591,8 +591,9 @@ void Guild_Report(Character *character, PacketReader &reader)
 			std::string create_date;
 			create_date.resize(31);
 
-			tm *local_time = localtime(&guild->created);
-			create_date = create_date.substr(0, strftime(&create_date[0], 31, static_cast<std::string>(character->world->config["GuildDateFormat"]).c_str(), local_time));
+			tm local_time = {};
+			localtime_s(&local_time, &guild->created);
+			create_date = create_date.substr(0, strftime(&create_date[0], 31, static_cast<std::string>(character->world->config["GuildDateFormat"]).c_str(), &local_time));
 
 			std::string bank_str = util::to_string(guild->bank);
 
