@@ -10,8 +10,6 @@
 #include "fwd/packet.hpp"
 
 #include <array>
-#include <cstddef>
-#include <string>
 
 /**
  * Encodes and Decodes packets for a Client.
@@ -58,11 +56,11 @@ class PacketProcessor
 		 */
 		static std::string GetActionName(PacketAction action);
 
-		std::string Decode(const std::string &);
-		std::string Encode(const std::string &);
+		std::string Decode(const std::string &) const;
+		std::string Encode(const std::string &) const;
 		static std::string DickWinder(const std::string &, unsigned char emulti);
-		std::string DickWinderE(const std::string &);
-		std::string DickWinderD(const std::string &);
+		std::string DickWinderE(const std::string &) const;
+		std::string DickWinderD(const std::string &) const;
 
 		void SetEMulti(unsigned char, unsigned char);
 

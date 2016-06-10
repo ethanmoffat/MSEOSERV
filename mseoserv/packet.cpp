@@ -6,16 +6,10 @@
 
 #include "packet.hpp"
 
-#ifdef DEBUG
-#include "console.hpp"
-#endif
-
 #include "util.hpp"
 
 #include <algorithm>
 #include <array>
-#include <cstddef>
-#include <string>
 
 PacketProcessor::PacketProcessor()
 	: emulti_e(0)
@@ -128,9 +122,9 @@ std::string PacketProcessor::GetActionName(PacketAction action)
 	}
 }
 
-std::string PacketProcessor::Decode(const std::string &str)
+std::string PacketProcessor::Decode(const std::string &str) const
 {
-	if (emulti_d == 0 || ((unsigned char)str[0] == PACKET_A_INIT && (unsigned char)str[1] == PACKET_F_INIT))
+	if (emulti_d == 0 || (static_cast<unsigned char>(str[0]) == PACKET_A_INIT && static_cast<unsigned char>(str[1]) == PACKET_F_INIT))
 		return str;
 
 	std::string newstr;
@@ -142,7 +136,7 @@ std::string PacketProcessor::Decode(const std::string &str)
 
 	while (i < length)
 	{
-		newstr[ii++] = (unsigned char)str[i] ^ 0x80;
+		newstr[ii++] = static_cast<unsigned char>(str[i]) ^ 0x80;
 		i += 2;
 	}
 
@@ -155,28 +149,28 @@ std::string PacketProcessor::Decode(const std::string &str)
 
 	do
 	{
-		newstr[ii++] = (unsigned char)str[i] ^ 0x80;
+		newstr[ii++] = static_cast<unsigned char>(str[i]) ^ 0x80;
 		i -= 2;
 	} while (i >= 0);
 
-	for (int i = 2; i < length; ++i)
+	for (int ndx = 2; ndx < length; ++ndx)
 	{
-		if (static_cast<unsigned char>(newstr[i]) == 128)
+		if (static_cast<unsigned char>(newstr[ndx]) == 128)
 		{
-			newstr[i] = 0;
+			newstr[ndx] = 0;
 		}
-		else if (newstr[i] == 0)
+		else if (newstr[ndx] == 0)
 		{
-			newstr[i] = 128;
+			newstr[ndx] = 128;
 		}
 	}
 
 	return this->DickWinderD(newstr);
 }
 
-std::string PacketProcessor::Encode(const std::string &rawstr)
+std::string PacketProcessor::Encode(const std::string &rawstr) const
 {
-	if (emulti_e == 0 || ((unsigned char)rawstr[2] == PACKET_A_INIT && (unsigned char)rawstr[3] == PACKET_F_INIT))
+	if (emulti_e == 0 || (static_cast<unsigned char>(rawstr[2]) == PACKET_A_INIT && static_cast<unsigned char>(rawstr[3]) == PACKET_F_INIT))
 		return rawstr;
 
 	std::string str = this->DickWinderE(rawstr);
@@ -192,7 +186,7 @@ std::string PacketProcessor::Encode(const std::string &rawstr)
 
 	while (i < length)
 	{
-		newstr[i] = (unsigned char)str[ii++] ^ 0x80;
+		newstr[i] = static_cast<unsigned char>(str[ii++]) ^ 0x80;
 		i += 2;
 	}
 
@@ -205,19 +199,19 @@ std::string PacketProcessor::Encode(const std::string &rawstr)
 
 	while (i >= 2)
 	{
-		newstr[i] = (unsigned char)str[ii++] ^ 0x80;
+		newstr[i] = static_cast<unsigned char>(str[ii++]) ^ 0x80;
 		i -= 2;
 	}
 
-	for (int i = 2; i < length; ++i)
+	for (int ndx = 2; ndx < length; ++ndx)
 	{
-		if (static_cast<unsigned char>(newstr[i]) == 128)
+		if (static_cast<unsigned char>(newstr[ndx]) == 128)
 		{
-			newstr[i] = 0;
+			newstr[ndx] = 0;
 		}
-		else if (newstr[i] == 0)
+		else if (newstr[ndx] == 0)
 		{
-			newstr[i] = 128;
+			newstr[ndx] = 128;
 		}
 	}
 
@@ -267,12 +261,12 @@ std::string PacketProcessor::DickWinder(const std::string &str, unsigned char em
 	return newstr;
 }
 
-std::string PacketProcessor::DickWinderE(const std::string &str)
+std::string PacketProcessor::DickWinderE(const std::string &str) const
 {
 	return PacketProcessor::DickWinder(str, this->emulti_e);
 }
 
-std::string PacketProcessor::DickWinderD(const std::string &str)
+std::string PacketProcessor::DickWinderD(const std::string &str) const
 {
 	return PacketProcessor::DickWinder(str, this->emulti_d);
 }
@@ -384,7 +378,7 @@ PacketAction PacketReader::Action() const
 	if (this->Length() < 1)
 		return PacketAction(0);
 
-	return PacketAction((unsigned char)this->data[0]);
+	return PacketAction(static_cast<unsigned char>(this->data[0]));
 }
 
 PacketFamily PacketReader::Family() const
@@ -392,7 +386,7 @@ PacketFamily PacketReader::Family() const
 	if (this->Length() < 2)
 		return PacketFamily(0);
 
-	return PacketFamily((unsigned char)this->data[1]);
+	return PacketFamily(static_cast<unsigned char>(this->data[1]));
 }
 
 unsigned int PacketReader::GetNumber(std::size_t length)
@@ -565,7 +559,7 @@ PacketBuilder &PacketBuilder::AddShort(unsigned short num)
 	std::size_t capacity_before = this->Capacity();
 #endif
 
-	this->data.append((char *)PacketProcessor::ENumber(num).data(), 2);
+	this->data.append(reinterpret_cast<char *>(PacketProcessor::ENumber(num).data()), 2);
 
 #ifdef DEBUG
 	if (this->data.length() > capacity_before)
@@ -581,7 +575,7 @@ PacketBuilder &PacketBuilder::AddThree(unsigned int num)
 	std::size_t capacity_before = this->Capacity();
 #endif
 
-	this->data.append((char *)PacketProcessor::ENumber(num).data(), 3);
+	this->data.append(reinterpret_cast<char *>(PacketProcessor::ENumber(num).data()), 3);
 
 #ifdef DEBUG
 	if (this->data.length() > capacity_before)
@@ -597,7 +591,7 @@ PacketBuilder &PacketBuilder::AddInt(unsigned int num)
 	std::size_t capacity_before = this->Capacity();
 #endif
 
-	this->data.append((char *)PacketProcessor::ENumber(num).data(), 4);
+	this->data.append(reinterpret_cast<char *>(PacketProcessor::ENumber(num).data()), 4);
 
 #ifdef DEBUG
 	if (this->data.length() > capacity_before)
