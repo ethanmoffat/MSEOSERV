@@ -8,12 +8,9 @@
 
 #include "character.hpp"
 #include "config.hpp"
-#include "eoclient.hpp"
-#include "eodata.hpp"
 #include "eoserver.hpp"
 #include "packet.hpp"
 #include "player.hpp"
-#include "timer.hpp"
 #include "world.hpp"
 
 #include "console.hpp"
@@ -21,13 +18,12 @@
 #include "util.hpp"
 
 #include <algorithm>
-#include <cstddef>
 #include <cstdint>
 #include <cstdio>
-#include <cstdlib>
 #include <stdexcept>
-#include <string>
 #include <utility>
+
+#pragma warning(disable : 4309)
 
 void ActionQueue::AddAction(const PacketReader& reader, double time, bool auto_queue)
 {
@@ -44,7 +40,7 @@ ActionQueue::~ActionQueue()
 
 void EOClient::Initialize()
 {
-	this->upload_fh = 0;
+	this->upload_fh = nullptr;
 	this->seq_start = 0;
 	this->upcoming_seq_start = -1;
 	this->seq = 0;
@@ -52,7 +48,7 @@ void EOClient::Initialize()
 	this->length = 0;
 	this->packet_state = EOClient::ReadLen1;
 	this->state = EOClient::Uninitialized;
-	this->player = 0;
+	this->player = nullptr;
 	this->version = 0;
 	this->needpong = false;
 	this->login_attempts = 0;
@@ -60,7 +56,7 @@ void EOClient::Initialize()
 
 bool EOClient::NeedTick()
 {
-	return this->upload_fh;
+	return this->upload_fh != nullptr;
 }
 
 void EOClient::Tick()
@@ -100,7 +96,7 @@ void EOClient::Tick()
 			using std::swap;
 
 			std::fclose(this->upload_fh);
-			this->upload_fh = 0;
+			this->upload_fh = nullptr;
 			this->upload_pos = 0;
 			this->upload_size = 0;
 
@@ -192,7 +188,7 @@ void EOClient::PongNewSequence()
 	this->seq_start = this->upcoming_seq_start;
 }
 
-std::pair<unsigned char, unsigned char> EOClient::GetSeqInitBytes()
+std::pair<unsigned char, unsigned char> EOClient::GetSeqInitBytes() const
 {
 	int s1_max = (this->seq_start + 13) / 7;
 	int s1_min = std::max(0, (this->seq_start - 252 + 13 + 6) / 7);
@@ -203,7 +199,7 @@ std::pair<unsigned char, unsigned char> EOClient::GetSeqInitBytes()
 	return {s1, s2};
 }
 
-std::pair<unsigned short, unsigned char> EOClient::GetSeqUpdateBytes()
+std::pair<unsigned short, unsigned char> EOClient::GetSeqUpdateBytes() const
 {
 	int s1_max = this->upcoming_seq_start + 252;
 	int s1_min = this->upcoming_seq_start;
@@ -243,21 +239,21 @@ void EOClient::Execute(const std::string &data)
 	PacketReader reader(processor.Decode(data));
 
 	time_t rawtime;
-	struct tm * timeinfo;
+	tm timeinfo = {};
 	time(&rawtime);
-	timeinfo = localtime(&rawtime);
+	localtime_s(&timeinfo, &rawtime);
 
 	std::string fam = PacketProcessor::GetFamilyName(reader.Family());
 	std::string act = PacketProcessor::GetActionName(reader.Action());
 	if(static_cast<std::string>(this->server()->world->config["IgnorePacketFamilies"]).find(fam) == std::string::npos)
 	{
 	    Console::Out("%02d/%02d/%04d - %02d:%02d:%02d | %-12s | RECV Family: %-15s | Action: %-15s | SIZE=%d",
-		timeinfo->tm_mon + 1,
-		timeinfo->tm_mday,
-		timeinfo->tm_year + 1900,
-		timeinfo->tm_hour,
-		timeinfo->tm_min,
-		timeinfo->tm_sec,
+		timeinfo.tm_mon + 1,
+		timeinfo.tm_mday,
+		timeinfo.tm_year + 1900,
+		timeinfo.tm_hour,
+		timeinfo.tm_min,
+		timeinfo.tm_sec,
 		player ? player->character ? player->character->real_name.c_str() : "no char" : "no char",
 		fam.c_str(),
 		act.c_str(),
@@ -308,7 +304,7 @@ void EOClient::Execute(const std::string &data)
 bool EOClient::Upload(FileType type, int id, InitReply init_reply)
 {
 	char mapbuf[7];
-	std::sprintf(mapbuf, "%05i", int(std::abs(id)));
+	sprintf_s(mapbuf, "%05i", int(std::abs(id)));
 
 	switch (type)
 	{
@@ -328,14 +324,13 @@ bool EOClient::Upload(FileType type, const std::string &filename, InitReply init
 	if (this->upload_fh)
 		throw std::runtime_error("Already uploading file");
 
-	this->upload_fh = std::fopen(filename.c_str(), "rb");
-
-	if (!this->upload_fh)
+	auto error = fopen_s(&this->upload_fh, filename.c_str(), "rb");
+	if (error || !this->upload_fh)
 		return false;
 
-	if (std::fseek(this->upload_fh, 0, SEEK_END) != 0)
+	if (fseek(this->upload_fh, 0, SEEK_END) != 0)
 	{
-		std::fclose(this->upload_fh);
+		fclose(this->upload_fh);
 		return false;
 	}
 
@@ -343,9 +338,9 @@ bool EOClient::Upload(FileType type, const std::string &filename, InitReply init
 	this->upload_pos = 0;
 	this->upload_size = std::ftell(this->upload_fh);
 
-	std::fseek(this->upload_fh, 0, SEEK_SET);
+	fseek(this->upload_fh, 0, SEEK_SET);
 
-	std::size_t temp_buffer_size = this->send_buffer.size();
+	size_t temp_buffer_size = this->send_buffer.size();
 
 	// Allocate a power-of-two buffer size large enough to hold the file
 	while (temp_buffer_size < this->upload_size + 6)
@@ -378,21 +373,21 @@ bool EOClient::Upload(FileType type, const std::string &filename, InitReply init
 void EOClient::Send(const PacketBuilder &builder)
 {
 	time_t rawtime;
-	struct tm * timeinfo;
+	tm timeinfo = {};
 	time(&rawtime);
-	timeinfo = localtime(&rawtime);
+	localtime_s(&timeinfo, &rawtime);
 
 	std::string fam = PacketProcessor::GetFamilyName(PacketFamily(PacketProcessor::EPID(builder.GetID())[1]));
 	std::string act = PacketProcessor::GetActionName(PacketAction(PacketProcessor::EPID(builder.GetID())[0]));
 	if(static_cast<std::string>(this->server()->world->config["IgnorePacketFamilies"]).find(fam) == std::string::npos)
 	{
 	   Console::Out("%02d/%02d/%04d - %02d:%02d:%02d | %-12s | SEND Family: %-15s | Action: %-15s | SIZE=%d",
-		timeinfo->tm_mon + 1,
-		timeinfo->tm_mday,
-		timeinfo->tm_year + 1900,
-		timeinfo->tm_hour,
-		timeinfo->tm_min,
-		timeinfo->tm_sec,
+		timeinfo.tm_mon + 1,
+		timeinfo.tm_mday,
+		timeinfo.tm_year + 1900,
+		timeinfo.tm_hour,
+		timeinfo.tm_min,
+		timeinfo.tm_sec,
 		player ? player->character ? player->character->real_name.c_str() : "no char" : "no char",
 		fam.c_str(),
 		act.c_str(),

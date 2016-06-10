@@ -7,10 +7,7 @@
 #ifndef EOSERVER_HPP_INCLUDED
 #define EOSERVER_HPP_INCLUDED
 
-#include "fwd/eoserver.hpp"
-
 #include "fwd/config.hpp"
-#include "fwd/eoclient.hpp"
 #include "fwd/sln.hpp"
 #include "fwd/world.hpp"
 
@@ -33,7 +30,7 @@ class EOServer : public Server
 		void Initialize(std::array<std::string, 6> dbinfo, const Config &eoserv_config, const Config &admin_config);
 
 	protected:
-		virtual Client *ClientFactory(const Socket &);
+		Client *ClientFactory(const Socket &) override;
 
 	public:
 		World *world;

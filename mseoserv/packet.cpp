@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <array>
 
+#pragma warning(disable: 4309) //disable C4309 here since truncation/overflow is necessary for the encode/decode algoritm
+
 PacketProcessor::PacketProcessor()
 	: emulti_e(0)
 	, emulti_d(0)

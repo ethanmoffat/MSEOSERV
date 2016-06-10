@@ -20,7 +20,6 @@
 #include "../util.hpp"
 
 #include <algorithm>
-#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -40,8 +39,8 @@ void SpawnItem(const std::vector<std::string>& arguments, Character* from)
 		reply.AddShort(0); // UID
 		reply.AddShort(id);
 		reply.AddThree(amount);
-		reply.AddChar(from->weight);
-		reply.AddChar(from->maxweight);
+		reply.AddChar(static_cast<unsigned char>(from->weight));
+		reply.AddChar(static_cast<unsigned char>(from->maxweight));
 		from->Send(reply);
 	}
 }
@@ -72,8 +71,8 @@ void DropItem(const std::vector<std::string>& arguments, Character* from)
 			reply.AddShort(item->uid);
 			reply.AddChar(x);
 			reply.AddChar(y);
-			reply.AddChar(from->weight);
-			reply.AddChar(from->maxweight);
+			reply.AddChar(static_cast<unsigned char>(from->weight));
+			reply.AddChar(static_cast<unsigned char>(from->maxweight));
 			from->Send(reply);
 		}
 	}
@@ -150,7 +149,7 @@ void Learn(const std::vector<std::string>& arguments, Character* from)
 
 		if (it != from->spells.end())
 		{
-			it->level = level;
+			it->level = static_cast<unsigned char>(level);
 
 			PacketBuilder builder(PACKET_STATSKILL, PACKET_ACCEPT, 6);
 			builder.AddShort(from->skillpoints);
@@ -191,7 +190,7 @@ void QuestState(const std::vector<std::string>& arguments, Character* from)
 		{
 			quest->SetState(arguments[1]);
 		}
-		catch (EOPlus::Runtime_Error& e)
+		catch (EOPlus::Runtime_Error&)
 		{
 			from->ServerMsg(world->i18n.Format("quest_state_not_found"));
 		}

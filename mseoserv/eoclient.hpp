@@ -9,7 +9,6 @@
 
 #include "fwd/eoclient.hpp"
 
-#include "fwd/character.hpp"
 #include "fwd/eodata.hpp"
 #include "fwd/player.hpp"
 #include "eoserver.hpp"
@@ -17,11 +16,9 @@
 
 #include "socket.hpp"
 
-#include <cstddef>
 #include <cstdio>
 #include <memory>
 #include <queue>
-#include <string>
 #include <utility>
 
 /**
@@ -79,24 +76,24 @@ class EOClient : public Client
 
 	private:
 		void Initialize();
-		EOClient();
 
 		FileType upload_type;
-		std::FILE *upload_fh;
-		std::size_t upload_pos;
-		std::size_t upload_size;
+		FILE *upload_fh;
+		size_t upload_pos;
+		size_t upload_size;
 
 		std::string send_buffer2;
-		std::size_t send_buffer2_gpos;
-		std::size_t send_buffer2_ppos;
-		std::size_t send_buffer2_used;
+		size_t send_buffer2_gpos;
+		size_t send_buffer2_ppos;
+		size_t send_buffer2_used;
 
 		int seq_start;
 		int upcoming_seq_start;
 		int seq;
 
 	public:
-		EOServer *server() { return static_cast<EOServer *>(Client::server); };
+
+		EOServer *server() const { return static_cast<EOServer *>(Client::server); };
 		int version;
 		Player *player;
 		unsigned int id;
@@ -114,6 +111,8 @@ class EOClient : public Client
 
 		PacketProcessor processor;
 
+		EOClient() = delete;
+
 		EOClient(EOServer *server_) : Client(server_)
 		{
 			this->Initialize();
@@ -124,15 +123,15 @@ class EOClient : public Client
 			this->Initialize();
 		}
 
-		virtual bool NeedTick();
+		bool NeedTick() override;
 
 		void Tick();
 
 		void InitNewSequence();
 		void PingNewSequence();
 		void PongNewSequence();
-		std::pair<unsigned char, unsigned char> GetSeqInitBytes();
-		std::pair<unsigned short, unsigned char> GetSeqUpdateBytes();
+		std::pair<unsigned char, unsigned char> GetSeqInitBytes() const;
+		std::pair<unsigned short, unsigned char> GetSeqUpdateBytes() const;
 		int GenSequence();
 		int GenUpcomingSequence();
 

@@ -19,12 +19,9 @@
 #include "util.hpp"
 
 #include <array>
-#include <cerrno>
-#include <cstddef>
 #include <exception>
 #include <memory>
 #include <stdexcept>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -148,7 +145,7 @@ void EOServer::Initialize(std::array<std::string, 6> dbinfo, const Config &eoser
 	}
 	else
 	{
-		this->sln = 0;
+		this->sln = nullptr;
 	}
 
 	this->start = Timer::GetTime();
@@ -161,7 +158,7 @@ Client *EOServer::ClientFactory(const Socket &sock)
 
 void EOServer::Tick()
 {
-	std::vector<Client *> *active_clients = 0;
+	std::vector<Client *> *active_clients = nullptr;
 	EOClient *newclient = static_cast<EOClient *>(this->Poll());
 
 	if (newclient)
@@ -220,7 +217,7 @@ void EOServer::Tick()
 	{
 		active_clients = this->Select(0.001);
 	}
-	catch (Socket_SelectFailed &e)
+	catch (Socket_SelectFailed)
 	{
 		if (errno != EINTR)
 			throw;
