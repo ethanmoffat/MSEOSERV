@@ -450,13 +450,14 @@ bool Map::Load()
 	}
 
 	std::string filename = this->world->config["MapDir"];
-	std::sprintf(namebuf, "%05i", this->id);
+	sprintf_s(namebuf, "%05i", this->id);
 	filename.append(namebuf);
 	filename.append(".emf");
 
 	map_safe_fail_filename = filename.c_str();
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	FILE *fh = nullptr;
+	fopen_s(&fh, filename.c_str(), "rb");
 
 	if (!fh)
 		return false;
@@ -484,7 +485,7 @@ bool Map::Load()
 
 	SAFE_SEEK(fh, 0x2A, SEEK_SET);
 	SAFE_READ(buf, sizeof(char), 3, fh);
-	this->scroll = PacketProcessor::Number(buf[0]);
+	this->scroll = PacketProcessor::Number(buf[0]) != 0;
 	this->relog_x = PacketProcessor::Number(buf[1]);
 	this->relog_y = PacketProcessor::Number(buf[2]);
 
@@ -1207,7 +1208,7 @@ Map::WalkResult Map::Walk(Character *from, Direction direction, bool admin)
 
 	if (spike_damage > 0.0 && (spec == Map_Tile::Spikes2 || spec == Map_Tile::Spikes3) && !from->IsHideInvisible())
 	{
-		int amount = from->maxhp * spike_damage;
+		int amount = static_cast<int>(from->maxhp * spike_damage);
 
 		from->SpikeDamage(amount);
 
@@ -1500,7 +1501,7 @@ void Map::Attack(Character *from, Direction direction)
 				formula_vars["damage"] = amount;
 				formula_vars["critical"] = critical;
 
-				amount = rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars);
+				amount = static_cast<int>(rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars));
 				double hit_rate = rpn_eval(rpn_parse(this->world->formulas_config["hit_rate"]), formula_vars);
 
 				if (rand > hit_rate)
@@ -1586,7 +1587,7 @@ bool Map::AttackPK(Character *from, Direction direction)
 				formula_vars["damage"] = amount;
 				formula_vars["critical"] = critical;
 
-				amount = rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars);
+				amount = static_cast<int>(rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars));
 				double hit_rate = rpn_eval(rpn_parse(this->world->formulas_config["hit_rate"]), formula_vars);
 
 				if (rand > hit_rate)
