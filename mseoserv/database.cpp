@@ -36,7 +36,13 @@
 #endif // DATABASE_SQLITE
 #endif // DATABASE_MYSQL
 
+#ifdef DATABASE_SQLITE
 #pragma comment(lib, "..\\sqlite\\sqlite3.lib")
+#endif
+
+#ifdef DATABASE_MYSQL
+#pragma comment(lib, "..\\mysql\\lib\\libmariadb.lib")
+#endif
 
 struct Database::impl_
 {
