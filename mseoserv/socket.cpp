@@ -29,6 +29,8 @@
 static WSADATA socket_wsadata;
 #endif // WIN32
 
+#pragma comment(lib, "ws2_32.lib")
+
 static char ErrorBuf[1024];
 
 static std::size_t eoserv_strlcpy(char *dest, const char *src, std::size_t size)

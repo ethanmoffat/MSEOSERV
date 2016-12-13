@@ -35,6 +35,8 @@
 static int rres = 0;
 #endif // WIN32
 
+#pragma comment(lib, "winmm.lib")
+
 static unsigned int clock_ticks()
 {
 #ifdef WIN32

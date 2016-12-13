@@ -36,6 +36,8 @@
 #endif // DATABASE_SQLITE
 #endif // DATABASE_MYSQL
 
+#pragma comment(lib, "..\\sqlite\\sqlite3.lib")
+
 struct Database::impl_
 {
 	union

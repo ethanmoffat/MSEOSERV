@@ -14,6 +14,8 @@
 
 #include "../eoserv_windows.h"
 
+#pragma comment(lib, "Advapi32.lib")
+
 SERVICE_STATUS_HANDLE service_handle;
 HANDLE service_event;
 
