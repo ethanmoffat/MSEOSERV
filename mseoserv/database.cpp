@@ -41,7 +41,11 @@
 #endif
 
 #ifdef DATABASE_MYSQL
+#ifdef _DEBUG
+#pragma comment(lib, "..\\mysql\\lib\\debug\\libmariadb.lib")
+#else
 #pragma comment(lib, "..\\mysql\\lib\\libmariadb.lib")
+#endif
 #endif
 
 struct Database::impl_
