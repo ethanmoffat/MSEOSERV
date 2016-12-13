@@ -2,7 +2,7 @@
  *
  */
 
-#include "../src/eoserv_windows.h"
+#include "../eoserv_windows.h"
 
 MAINICON ICON "icon.ico"
 

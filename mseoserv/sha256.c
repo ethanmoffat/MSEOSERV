@@ -52,7 +52,7 @@ static const uint32_t h[HASH_SIZE] = {
 	0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19
 };
 
-static inline uint32_t pack_u32(const char *src)
+static uint32_t pack_u32(const char *src)
 {
 	return ((uint32_t)(unsigned char)src[0] << 24) |
 	       ((uint32_t)(unsigned char)src[1] << 16) |
@@ -60,7 +60,7 @@ static inline uint32_t pack_u32(const char *src)
 	       ((uint32_t)(unsigned char)src[3]      );
 }
 
-static inline void unpack_u32(char *dest, uint32_t src)
+static void unpack_u32(char *dest, uint32_t src)
 {
 	dest[0] = (char)(unsigned char)(src >> 24);
 	dest[1] = (char)(unsigned char)(src >> 16);
@@ -68,7 +68,7 @@ static inline void unpack_u32(char *dest, uint32_t src)
 	dest[3] = (char)(unsigned char)(src      );
 }
 
-static inline uint32_t rr32(uint32_t x, int y)
+static uint32_t rr32(uint32_t x, int y)
 {
 	return (x >> y) | (x << (32 - y));
 }
