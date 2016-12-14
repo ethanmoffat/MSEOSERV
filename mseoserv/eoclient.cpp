@@ -238,6 +238,7 @@ void EOClient::Execute(const std::string &data)
 
 	PacketReader reader(processor.Decode(data));
 
+#ifdef _DEBUG
 	time_t rawtime;
 	tm timeinfo = {};
 	time(&rawtime);
@@ -260,6 +261,7 @@ void EOClient::Execute(const std::string &data)
 		reader.Length()
 		);
 	}
+#endif
 
 	if (reader.Family() == PACKET_INTERNAL)
 	{
@@ -372,6 +374,7 @@ bool EOClient::Upload(FileType type, const std::string &filename, InitReply init
 
 void EOClient::Send(const PacketBuilder &builder)
 {
+#ifdef _DEBUG
 	time_t rawtime;
 	tm timeinfo = {};
 	time(&rawtime);
@@ -393,6 +396,7 @@ void EOClient::Send(const PacketBuilder &builder)
 		act.c_str(),
 		builder.Length());
 	}
+#endif
 
 	std::string data = this->processor.Encode(builder);
 
