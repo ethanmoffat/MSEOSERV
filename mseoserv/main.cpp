@@ -16,12 +16,10 @@
 #include <array>
 #include <csignal>
 #include <cstdio>
-#include <cstdlib>
 #include <ctime>
 #include <exception>
 #include <limits>
 #include <stdexcept>
-#include <string>
 
 #include "version.h"
 
@@ -53,7 +51,7 @@ static void eoserv_terminate(int signal)
 #ifndef DEBUG
 static void eoserv_crash(int signal)
 {
-    const char *extype = "Unknown error";
+    const char *extype;
 
     switch (signal)
     {
@@ -63,6 +61,7 @@ static void eoserv_crash(int signal)
         case SIGBUS: extype = "Dereferenced invalid pointer"; break;
 #endif // SIGBUS
         case SIGILL: extype = "Illegal instruction"; break;
+        default: extype = "Unknown signal!"; break;
     }
 
     Console::Err("EOSERV is dying! %s", extype);
