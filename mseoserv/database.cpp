@@ -515,7 +515,10 @@ Database_Result Database::Query(const char *format, ...)
 	int tempi;
 	char *tempc;
 	char *escret;
+
+#ifdef DATABASE_MYSQL
 	unsigned long esclen;
+#endif
 
 	for (const char *p = format; *p != '\0'; ++p)
 	{
@@ -567,8 +570,11 @@ Database_Result Database::Query(const char *format, ...)
 std::string Database::Escape(const std::string& raw)
 {
 	char *escret;
-	unsigned long esclen;
 	std::string result;
+
+#ifdef DATABASE_MYSQL
+	unsigned long esclen;
+#endif
 
 	switch (this->engine)
 	{
