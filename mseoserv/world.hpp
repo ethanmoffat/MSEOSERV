@@ -101,7 +101,7 @@ class World
 		Config formulas_config;
 		Config home_config;
 		Config skills_config;
-		Config vocab_config;
+		Config speech_config;
 
 		I18N i18n;
 

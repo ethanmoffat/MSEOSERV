@@ -86,10 +86,10 @@ void world_act_npcs(void *world_void)
 
 			const auto& data = npc->Data();
 
-			if (npc->last_talk + data.talk_speed < current_time && data.vocab.size() > 0)
+			if (npc->last_talk + data.talk_speed < current_time && data.speech.size() > 0)
 			{
-				int ndx = util::rand(0, data.vocab.size() - 1);
-				std::string speech = data.vocab[ndx];
+				int ndx = util::rand(0, data.speech.size() - 1);
+				std::string speech = data.speech[ndx];
 				npc->map->Msg(npc, speech);
 				npc->last_talk += data.talk_speed;
 			}
@@ -415,7 +415,7 @@ World::World(std::array<std::string, 6> dbinfo, const Config &eoserv_config, con
 		this->formulas_config.Read(this->config["FormulasFile"]);
 		this->home_config.Read(this->config["HomeFile"]);
 		this->skills_config.Read(this->config["SkillsFile"]);
-		this->vocab_config.Read(this->config["VocabFile"]);
+		this->speech_config.Read(this->config["SpeechFile"]);
 	}
 	catch (std::runtime_error &e)
 	{
@@ -916,7 +916,7 @@ void World::Rehash()
 		this->formulas_config.Read(this->config["FormulasFile"]);
 		this->home_config.Read(this->config["HomeFile"]);
 		this->skills_config.Read(this->config["SkillsFile"]);
-		this->vocab_config.Read(this->config["VocabFile"]);
+		this->speech_config.Read(this->config["SpeechFile"]);
 	}
 	catch (std::runtime_error &e)
 	{

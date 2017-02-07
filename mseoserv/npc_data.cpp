@@ -37,7 +37,7 @@ void NPC_Data::UnloadShopDrop()
 
 	this->citizenship.reset();
 
-	this->vocab.clear();
+	this->speech.clear();
 }
 
 void NPC_Data::LoadShopDrop()
@@ -293,15 +293,15 @@ void NPC_Data::LoadShopDrop()
 		}
 	}
 
-	Config::iterator iter_vocab = world->vocab_config.find(util::to_string(id) + ".speech");
-	if (iter_vocab != world->vocab_config.end())
+	Config::iterator iter_speech = world->speech_config.find(util::to_string(id) + ".speech");
+	if (iter_speech != world->speech_config.end())
 	{
-		std::string freq_str = util::trim(static_cast<std::string>(world->vocab_config[util::to_string(this->id) + ".freq"]));
+		std::string freq_str = util::trim(static_cast<std::string>(world->speech_config[util::to_string(this->id) + ".freq"]));
 		talk_speed = util::to_float(freq_str);
 
-		auto parts = util::explode(',', static_cast<std::string>(iter_vocab->second));
+		auto parts = util::explode(',', static_cast<std::string>(iter_speech->second));
 		for (auto part : parts)
-			vocab.push_back(util::trim(part));
+			speech.push_back(util::trim(part));
 	}
 }
 
