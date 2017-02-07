@@ -424,7 +424,7 @@ Database_Result Database::RawQuery(const char* query, bool tx_control)
 			{
 				if (num_fields == 0)
 				{
-					result.affected_rows = mysql_affected_rows(this->impl->mysql_handle);
+					result.affected_rows = static_cast<int>(mysql_affected_rows(this->impl->mysql_handle));
 					return result;
 				}
 				else
@@ -443,7 +443,7 @@ Database_Result Database::RawQuery(const char* query, bool tx_control)
 				}
 			}
 
-			result.resize(mysql_num_rows(mresult));
+			result.resize(static_cast<size_t>(mysql_num_rows(mresult)));
 			int i = 0;
 			for (MYSQL_ROW row = mysql_fetch_row(mresult); row != 0; row = mysql_fetch_row(mresult))
 			{
@@ -606,7 +606,10 @@ void Database::ExecuteFile(const std::string& filename)
 	std::list<std::string> queries;
 	std::string query;
 
-	FILE* fh = std::fopen(filename.c_str(), "rt");
+	FILE* fh;
+	auto error = fopen_s(&fh, filename.c_str(), "rt");
+	if (error || !fh)
+		throw std::exception("Unable to open file");
 
 	try
 	{
@@ -633,13 +636,15 @@ void Database::ExecuteFile(const std::string& filename)
 			}
 		}
 	}
-	catch (std::exception &e)
+	catch (std::exception)
 	{
-		std::fclose(fh);
+		if (fh)
+			std::fclose(fh);
 		throw;
 	}
 
-	std::fclose(fh);
+	if (fh)
+		std::fclose(fh);
 
 	queries.push_back(query);
 	query.erase();
