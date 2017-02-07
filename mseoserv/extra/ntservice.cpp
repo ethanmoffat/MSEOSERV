@@ -147,7 +147,7 @@ bool service_uninstall(const char *name)
 		return false;
 	}
 
-	bool result = DeleteService(service);
+	bool result = DeleteService(service) != 0;
 	CloseServiceHandle(service);
 	CloseServiceHandle(scm);
 	return result;
