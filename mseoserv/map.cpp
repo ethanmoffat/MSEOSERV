@@ -1611,7 +1611,7 @@ bool Map::AttackPK(Character *from, Direction direction)
 				from_builder.AddShort(character->PlayerID());
 				from_builder.AddThree(amount);
 				from_builder.AddChar(from->direction);
-				from_builder.AddChar(util::clamp<int>(double(character->hp) / double(character->maxhp) * 100.0, 0, 100));
+				from_builder.AddChar(util::clamp<int>(static_cast<int>(double(character->hp) / double(character->maxhp) * 100.0), 0, 100));
 				from_builder.AddChar(character->hp == 0);
 
 				PacketBuilder builder(PACKET_AVATAR, PACKET_REPLY, 10);
@@ -1619,7 +1619,7 @@ bool Map::AttackPK(Character *from, Direction direction)
 				builder.AddShort(character->PlayerID());
 				builder.AddThree(amount);
 				builder.AddChar(from->direction);
-				builder.AddChar(util::clamp<int>(double(character->hp) / double(character->maxhp) * 100.0, 0, 100));
+				builder.AddChar(util::clamp<int>(static_cast<int>(double(character->hp) / double(character->maxhp) * 100.0), 0, 100));
 				builder.AddChar(character->hp == 0);
 
 				from->Send(from_builder);
@@ -1882,7 +1882,7 @@ void Map::SpellSelf(Character *from, unsigned short spell_id)
 	builder.AddShort(from->PlayerID());
 	builder.AddShort(spell_id);
 	builder.AddInt(spell.hp);
-	builder.AddChar(util::clamp<int>(double(from->hp) / double(from->maxhp) * 100.0, 0, 100));
+	builder.AddChar(util::clamp<int>(static_cast<int>(double(from->hp) / double(from->maxhp) * 100.0), 0, 100));
 
 	UTIL_FOREACH(this->characters, character)
 	{
@@ -1924,7 +1924,7 @@ void Map::SpellAttack(Character *from, NPC *npc, unsigned short spell_id)
 		formula_vars["damage"] = amount;
 		formula_vars["critical"] = critical;
 
-		amount = rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars);
+		amount = static_cast<int>(rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars));
 		double hit_rate = rpn_eval(rpn_parse(this->world->formulas_config["hit_rate"]), formula_vars);
 
 		if (rand > hit_rate)
@@ -1973,7 +1973,7 @@ void Map::SpellAttackPK(Character *from, Character *victim, unsigned short spell
 		formula_vars["damage"] = amount;
 		formula_vars["critical"] = critical;
 
-		amount = rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars);
+		amount = static_cast<int>(rpn_eval(rpn_parse(this->world->formulas_config["damage"]), formula_vars));
 		double hit_rate = rpn_eval(rpn_parse(this->world->formulas_config["hit_rate"]), formula_vars);
 
 		if (rand > hit_rate)
@@ -1997,7 +1997,7 @@ void Map::SpellAttackPK(Character *from, Character *victim, unsigned short spell
 		builder.AddShort(victim->PlayerID());
 		builder.AddThree(amount);
 		builder.AddChar(from->direction);
-		builder.AddChar(util::clamp<int>(double(victim->hp) / double(victim->maxhp) * 100.0, 0, 100));
+		builder.AddChar(util::clamp<int>(static_cast<int>(double(victim->hp) / double(victim->maxhp) * 100.0), 0, 100));
 		builder.AddChar(victim->hp == 0);
 		builder.AddShort(spell_id);
 
@@ -2054,7 +2054,7 @@ void Map::SpellAttackPK(Character *from, Character *victim, unsigned short spell
 		builder.AddChar(from->direction);
 		builder.AddShort(spell_id);
 		builder.AddInt(spell.hp);
-		builder.AddChar(util::clamp<int>(double(victim->hp) / double(victim->maxhp) * 100.0, 0, 100));
+		builder.AddChar(util::clamp<int>(static_cast<int>(double(victim->hp) / double(victim->maxhp) * 100.0), 0, 100));
 
 		UTIL_FOREACH(this->characters, character)
 		{
@@ -2134,7 +2134,7 @@ void Map::SpellGroup(Character *from, unsigned short spell_id)
 		builder.AddByte(255);
 
 		builder.AddShort(member->PlayerID());
-		builder.AddChar(util::clamp<int>(double(member->hp) / double(member->maxhp) * 100.0, 0, 100));
+		builder.AddChar(util::clamp<int>(static_cast<int>(double(member->hp) / double(member->maxhp) * 100.0), 0, 100));
 		builder.AddShort(member->hp);
 
 		UTIL_FOREACH(this->characters, character)
@@ -2421,13 +2421,14 @@ bool Map::Reload()
 	char checkrid[4];
 
 	std::string filename = this->world->config["MapDir"];
-	std::sprintf(namebuf, "%05i", this->id);
+	sprintf_s(namebuf, "%05i", this->id);
 	filename.append(namebuf);
 	filename.append(".emf");
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	std::FILE *fh;
+	auto err = fopen_s(&fh, filename.c_str(), "rb");
 
-	if (!fh)
+	if (err || !fh)
 	{
 		Console::Err("Could not load file: %s", filename.c_str());
 		return false;
@@ -2487,7 +2488,7 @@ void Map::TimedSpikes()
 
 		if (spike_damage > 0.0 && spec == Map_Tile::Spikes1)
 		{
-			int amount = character->maxhp * spike_damage;
+			int amount = static_cast<int>(character->maxhp * spike_damage);
 
 			character->SpikeDamage(amount);
 
@@ -2522,7 +2523,7 @@ void Map::TimedDrains()
 			if (character->nowhere || character->IsHideInvisible())
 				continue;
 
-			int amount = character->maxhp * hpdrain_damage;
+			int amount = static_cast<int>(character->maxhp * hpdrain_damage);
 			amount = std::max(std::min(amount, int(character->hp - 1)), 0);
 			character->hp -= amount;
 
@@ -2558,7 +2559,7 @@ void Map::TimedDrains()
 						continue;
 
 					builder.AddShort(other->PlayerID());
-					builder.AddChar(util::clamp<int>(double(other->hp) / double(other->maxhp) * 100.0, 0, 100));
+					builder.AddChar(util::clamp<int>(static_cast<int>(double(other->hp) / double(other->maxhp) * 100.0), 0, 100));
 					builder.AddShort(damage);
 				}
 
@@ -2578,7 +2579,7 @@ void Map::TimedDrains()
 
 			if (tpdrain_damage > 0.0)
 			{
-				int amount = character->maxtp * tpdrain_damage;
+				int amount = static_cast<int>(character->maxtp * tpdrain_damage);
 				
 				amount = std::min(amount, int(character->tp));
 
