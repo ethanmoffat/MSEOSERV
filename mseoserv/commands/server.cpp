@@ -34,7 +34,7 @@ void ReloadMap(const std::vector<std::string>& arguments, Character* from)
 
 	if (arguments.size() >= 1)
 	{
-		int mapid = util::to_int(arguments[0]);
+		size_t mapid = util::to_int(arguments[0]);
 
 		if (mapid < 1)
 			mapid = 1;
@@ -43,7 +43,7 @@ void ReloadMap(const std::vector<std::string>& arguments, Character* from)
 		{
 			map = world->maps[mapid - 1];
 		}
-		else if (mapid <= static_cast<int>(world->config["Maps"]))
+		else if (mapid <= static_cast<size_t>(static_cast<int>(world->config["Maps"])))
 		{
 			isnew = true;
 
