@@ -1,0 +1,6 @@
+root = true
+
+[*.{cpp,c,h,hpp}]
+indent_style = tab
+indent_space = 4
+tab_width = 4
