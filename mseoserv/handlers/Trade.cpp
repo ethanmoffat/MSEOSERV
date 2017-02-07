@@ -130,7 +130,7 @@ void Trade_Agree(Character *character, PacketReader &reader)
 
 	int agree = reader.GetChar();
 
-	character->trade_agree = agree;
+	character->trade_agree = agree != 0;
 
 	if (agree)
 	{

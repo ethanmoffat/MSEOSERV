@@ -156,12 +156,12 @@ void Welcome_Request(Player *player, PacketReader &reader)
 
 	if (!player->world->config["OldVersionCompat"] && player->client->version < 28)
 	{
-		reply.AddChar(player->character->display_str);
-		reply.AddChar(player->character->display_wis);
-		reply.AddChar(player->character->display_intl);
-		reply.AddChar(player->character->display_agi);
-		reply.AddChar(player->character->display_con);
-		reply.AddChar(player->character->display_cha);
+		reply.AddChar(static_cast<unsigned char>(player->character->display_str));
+		reply.AddChar(static_cast<unsigned char>(player->character->display_wis));
+		reply.AddChar(static_cast<unsigned char>(player->character->display_intl));
+		reply.AddChar(static_cast<unsigned char>(player->character->display_agi));
+		reply.AddChar(static_cast<unsigned char>(player->character->display_con));
+		reply.AddChar(static_cast<unsigned char>(player->character->display_cha));
 	}
 	else
 	{
@@ -266,8 +266,9 @@ void Welcome_Msg(Player *player, PacketReader &reader)
 	std::string news_file = player->world->config["NewsFile"];
 
 	char newsbuf[4096] = "";
-	std::FILE *newsfh = std::fopen(news_file.c_str(), "rt");
-	bool newseof = (newsfh == 0);
+	std::FILE *newsfh;
+	auto error = fopen_s(&newsfh, news_file.c_str(), "rt");
+	bool newseof = (error || !newsfh);
 
 	if (newseof)
 	{
@@ -309,8 +310,8 @@ void Welcome_Msg(Player *player, PacketReader &reader)
 		+ updatecharacters.size() * 60 + updatenpcs.size() * 6 + updateitems.size() * 9);
 
 	// ??
-	reply.AddChar(player->character->weight); // Weight
-	reply.AddChar(player->character->maxweight); // Max Weight
+	reply.AddChar(static_cast<unsigned char>(player->character->weight)); // Weight
+	reply.AddChar(static_cast<unsigned char>(player->character->maxweight)); // Max Weight
 	UTIL_FOREACH(player->character->inventory, item)
 	{
 		reply.AddShort(item.id);
