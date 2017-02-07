@@ -944,9 +944,9 @@ Map::WalkResult Map::Walk(Character *from, Direction direction, bool admin)
 			return WalkFail;
 	}
 
-    from->last_walk = Timer::GetTime();
-    from->attacks = 0;
-    from->CancelSpell();
+	from->last_walk = Timer::GetTime();
+	from->attacks = 0;
+	from->CancelSpell();
 
 	from->direction = direction;
 
