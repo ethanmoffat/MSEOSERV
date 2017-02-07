@@ -299,7 +299,7 @@ void NPC_Data::LoadShopDrop()
 		std::string freq_str = util::trim(static_cast<std::string>(world->speech_config[util::to_string(this->id) + ".freq"]));
 		talk_speed = util::to_float(freq_str);
 
-		auto parts = util::explode(',', static_cast<std::string>(iter_speech->second));
+		auto parts = util::explode(';', static_cast<std::string>(iter_speech->second));
 		for (auto part : parts)
 			speech.push_back(util::trim(part));
 	}
