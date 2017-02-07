@@ -29,9 +29,9 @@ namespace EOPlus
 
 	bool ctype_op(char c) { return ctype("()&|=!<>+-*/%&|!", c); }
 	bool ctype_symbol(char c) { return ctype(";{}.,", c); }
-	bool ctype_whitespace(char c) { return std::isspace(c); }
-	bool ctype_alpha(char c) { return std::isalpha(c); }
-	bool ctype_digit(char c) { return std::isdigit(c); }
+	bool ctype_whitespace(char c) { return std::isspace(c) != 0; }
+	bool ctype_alpha(char c) { return std::isalpha(c) != 0; }
+	bool ctype_digit(char c) { return std::isdigit(c) != 0; }
 	bool ctype_alnum(char c) { return ctype_alpha(c) || ctype_digit(c); }
 	bool ctype_ident_start(char c) { return ctype_alpha(c) || c == '_' || c == '$'; }
 	bool ctype_ident(char c) { return c != '$' && (ctype_ident_start(c) || ctype_digit(c)); }
@@ -129,12 +129,8 @@ namespace EOPlus
 		{
 			if (escape)
 			{
-				switch (c)
-				{
-					// No real need for any explicit escape codes...
-					default: s += c; break;
-				};
-
+				// No real need for any explicit escape codes...
+				s += c;
 				escape = false;
 			}
 			else if (c == '\\')
