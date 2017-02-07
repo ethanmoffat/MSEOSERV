@@ -28,10 +28,11 @@ void EIF::Read(const std::string& filename)
 {
 	this->data.clear();
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	std::FILE *fh;
+	auto error = fopen_s(&fh, filename.c_str(), "rb");
 	eodata_safe_fail_filename = filename.c_str();
 
-	if (!fh)
+	if (error || !fh)
 	{
 		Console::Err("Could not load file: %s", filename.c_str());
 		std::exit(1);
@@ -159,10 +160,11 @@ void ENF::Read(const std::string& filename)
 {
 	this->data.clear();
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	std::FILE *fh;
+	auto error = fopen_s(&fh, filename.c_str(), "rb");
 	eodata_safe_fail_filename = filename.c_str();
 
-	if (!fh)
+	if (error || !fh)
 	{
 		Console::Err("Could not load file: %s", filename.c_str());
 		std::exit(1);
@@ -246,10 +248,11 @@ void ESF::Read(const std::string& filename)
 {
 	this->data.clear();
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	std::FILE *fh;
+	auto error = fopen_s(&fh, filename.c_str(), "rb");
 	eodata_safe_fail_filename = filename.c_str();
 
-	if (!fh)
+	if (error || !fh)
 	{
 		Console::Err("Could not load file: %s", filename.c_str());
 		std::exit(1);
@@ -349,10 +352,11 @@ void ECF::Read(const std::string& filename)
 {
 	this->data.clear();
 
-	std::FILE *fh = std::fopen(filename.c_str(), "rb");
+	std::FILE *fh;
+	auto error = fopen_s(&fh, filename.c_str(), "rb");
 	eodata_safe_fail_filename = filename.c_str();
 
-	if (!fh)
+	if (error || !fh)
 	{
 		Console::Err("Could not load file: %s", filename.c_str());
 		std::exit(1);
