@@ -1607,6 +1607,12 @@ bool Map::AttackPK(Character *from, Direction direction)
 					amount = limitamount;
 				}
 
+				if (character->immortal)
+				{
+					amount = 0;
+					limitamount = 0;
+				}
+
 				character->hp -= limitamount;
 
 				PacketBuilder from_builder(PACKET_AVATAR, PACKET_REPLY, 10);

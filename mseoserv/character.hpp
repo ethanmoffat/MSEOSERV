@@ -195,6 +195,7 @@ class Character : public Command_Source
 		int usage;
 		int muted_until;
 		bool bot;
+		bool immortal;
 
 		std::string faux_name;
 

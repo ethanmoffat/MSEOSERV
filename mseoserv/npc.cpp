@@ -960,6 +960,12 @@ void NPC::Attack(Character *target)
 		amount = limitamount;
 	}
 
+	if (target->immortal)
+	{
+		limitamount = 0;
+		amount = 0;
+	}
+
 	target->hp -= limitamount;
 	if (target->party)
 	{

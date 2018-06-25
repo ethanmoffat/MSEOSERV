@@ -370,6 +370,27 @@ void Undress(const std::vector<std::string>& arguments, Command_Source* from)
 	}
 }
 
+void Immortal(const std::vector<std::string>& arguments, Command_Source* from)
+{
+	Character *victim = from->SourceWorld()->GetCharacter(arguments[0]);
+
+	if (!victim || victim->nowhere)
+	{
+		from->ServerMsg(from->SourceWorld()->i18n.Format("character_not_found"));
+	}
+	else
+	{
+		if (victim->SourceAccess() < from->SourceAccess() || victim == from->SourceCharacter())
+		{
+			victim->immortal = !victim->immortal; //toggle immortal state
+		}
+		else
+		{
+			from->ServerMsg(from->SourceWorld()->i18n.Format("command_access_denied"));
+		}
+	}
+}
+
 COMMAND_HANDLER_REGISTER(char_mod)
 	using namespace std::placeholders;
 	Register({"setlevel", {"victim", "value"}, {}, 4}, std::bind(SetX, _1, _2, "level"), CMD_FLAG_DUTY_RESTRICT);
@@ -398,6 +419,7 @@ COMMAND_HANDLER_REGISTER(char_mod)
 	Register({"dress", {"victim"}, {"id"}}, Dress); // victim is the actual optional argument
 	Register({"dress2", {"victim", "slot"}, {"id"}, 6}, Dress2); // victim is the actual optional argument
 	Register({"undress", {}, {"victim", "slot"}, 3}, Undress);
+	Register({"immortal", {"victim"}, {}, 2}, Immortal);
 
 	RegisterAlias("d2", "dress2");
 COMMAND_HANDLER_REGISTER_END(char_mod)
