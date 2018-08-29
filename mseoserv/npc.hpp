@@ -52,6 +52,10 @@ class NPC
 		int totaldamage;
 		std::list<std::unique_ptr<NPC_Opponent>> damagelist;
 
+		int marriage_state;
+		int marriage_timer;
+		std::string marriage_partner[2];
+
 		Map *map;
 		unsigned char index;
 		unsigned char spawn_type;
@@ -75,6 +79,7 @@ class NPC
 		void RemoveFromView(Character *target);
 		void Killed(Character *from, int amount, int spell_id = -1);
 		void Die(bool show = true);
+		void Wedding();
 
 		void Attack(Character *target);
 

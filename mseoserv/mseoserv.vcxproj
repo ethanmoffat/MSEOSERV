@@ -288,12 +288,14 @@
     <ClCompile Include="handlers\Internal.cpp" />
     <ClCompile Include="handlers\Item.cpp" />
     <ClCompile Include="handlers\Jukebox.cpp" />
+    <ClCompile Include="handlers\Law.cpp" />
     <ClCompile Include="handlers\Locker.cpp" />
     <ClCompile Include="handlers\Login.cpp" />
     <ClCompile Include="handlers\Message.cpp" />
     <ClCompile Include="handlers\Paperdoll.cpp" />
     <ClCompile Include="handlers\Party_Handler.cpp" />
     <ClCompile Include="handlers\Players.cpp" />
+    <ClCompile Include="handlers\Priest.cpp" />
     <ClCompile Include="handlers\Quest_Handler.cpp" />
     <ClCompile Include="handlers\Refresh.cpp" />
     <ClCompile Include="handlers\Shop.cpp" />

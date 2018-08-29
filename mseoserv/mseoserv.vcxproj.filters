@@ -527,6 +527,12 @@
     <ClCompile Include="handlers\Quest_Handler.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
+    <ClCompile Include="handlers\Law.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="handlers\Priest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\icon.ico">
