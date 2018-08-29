@@ -17,7 +17,7 @@ namespace Handlers
         {
             character->map->Msg(character->npc,"Very well, the ceremony will start in " + util::to_string(static_cast<int>(character->world->config["WeddingStartDelay"])) + " seconds.");
             character->npc->marriage_state = 1;
-            character->npc->marriage_timer = Timer::GetTime() + static_cast<int>(character->world->config["WeddingStartDelay"]);
+            character->npc->marriage_timer = static_cast<int>(Timer::GetTime()) + static_cast<int>(character->world->config["WeddingStartDelay"]);
             character->npc->Wedding();
 
             PacketBuilder reply;
@@ -161,5 +161,5 @@ namespace Handlers
         Register(PACKET_USE, Priest_Use, Playing);
         Register(PACKET_REQUEST, Priest_Request, Playing);
         Register(PACKET_OPEN, Priest_Open, Playing);
-    PACKET_HANDLER_REGISTER_END()
+    PACKET_HANDLER_REGISTER_END(PACKET_PRIEST)
 }

@@ -1058,7 +1058,7 @@ void npc_wedding(void *npc_void)
             }
 
         if(now > npc->marriage_timer && npc->marriage_state > 0){
-            npc->marriage_timer = now + 10;
+            npc->marriage_timer = static_cast<int>(now) + 10;
             npc->marriage_state++;
             std::string msg = "";
             Character *wed_char[2] = {0,0};
@@ -1118,7 +1118,7 @@ void npc_wedding(void *npc_void)
                     PacketBuilder builder(PACKET_ITEM, PACKET_OBTAIN, 6);
                     builder.AddShort(int(npc->map->world->config["WeddingRing"]));
                     builder.AddThree(1);
-                    builder.AddChar(wed_char[i]->weight);
+                    builder.AddChar(static_cast<unsigned char>(wed_char[i]->weight));
                     wed_char[i]->Send(builder);
 
                     wed_char[i]->StatusMsg("You received a ring!");
@@ -1135,7 +1135,7 @@ void npc_wedding(void *npc_void)
                 for(int i =0; i <=1; i++){
                     wed_char[i]->Effect(util::to_int(util::explode(',', npc->map->world->config["WeddingEffects"])[npc->marriage_state-15]));
                 }
-                npc->marriage_timer = now + 2.0; // speed up for the effects
+                npc->marriage_timer = static_cast<int>(now) + 2; // speed up for the effects
             }
             if (msg != "")
                 npc->map->Msg(npc, msg);
