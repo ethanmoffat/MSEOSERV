@@ -865,7 +865,7 @@ void NPC::Killed(Character *from, int amount, int spell_id)
 		);
 	}
 
-	UTIL_FOREACH(from->quests, q)
+	for (const auto &q : from->quests)
 	{
 		if (!q.second || q.second->GetQuest()->Disabled())
 			continue;
