@@ -1046,112 +1046,137 @@ void npc_wedding(void *npc_void)
 {
 	NPC *npc(static_cast<NPC *>(npc_void));
 
-	if(npc->ENF().type == ENF::Priest){
-        double now = Timer::GetTime();
+	if(npc->ENF().type == ENF::Priest)
+	{
+		double now = Timer::GetTime();
 
-        if (npc->marriage_state >= 20){
-                npc->marriage_state = 0;
-                for(int i = 0; i <=1;i++){
-                    npc->marriage_partner[i] = "";
-                }
-                return;
-            }
+		if (npc->marriage_state >= 20)
+		{
+			npc->marriage_state = 0;
+			for(int i = 0; i <=1;i++)
+			{
+				npc->marriage_partner[i] = "";
+			}
+			return;
+		}
 
-        if(now > npc->marriage_timer && npc->marriage_state > 0){
-            npc->marriage_timer = static_cast<int>(now) + 10;
-            npc->marriage_state++;
-            std::string msg = "";
-            Character *wed_char[2] = {0,0};
+		if(now > npc->marriage_timer && npc->marriage_state > 0)
+		{
+			npc->marriage_timer = static_cast<int>(now) + 10;
+			npc->marriage_state++;
+			std::string msg = "";
+			Character *wed_char[2] = { nullptr, nullptr };
 
-            for(int i = 0; i <= 1; i++){
+			for(int i = 0; i <= 1; i++)
+			{
+				if  (npc->marriage_partner[i] == "")
+				{
+					npc->marriage_state = 20;
+					return;
+				}
+				Character *wed_chars = npc->map->world->GetCharacter(npc->marriage_partner[i]);
+				if(!wed_chars)
+				{
+					npc->map->Msg(npc, "Stopping the wedding, both partners need to be present!");
+					npc->marriage_state = 20;
+					break;
+				}
+				
+				if(wed_chars->map != npc->map)
+				{
+					npc->map->Msg(npc, "Stopping the wedding, "+util::ucfirst(wed_chars->SourceName())+" left the map!");
+					npc->marriage_state = 20;
+					break;
+				}
 
-                if  (npc->marriage_partner[i] == ""){
-                    npc->marriage_state = 20;
-                    return;
-                }
-                Character *wed_chars = npc->map->world->GetCharacter(npc->marriage_partner[i]);
-                if(!wed_chars){
-                    npc->map->Msg(npc, "Stopping the wedding, both partners need to be present!");
-                    npc->marriage_state = 20;
-                    break;
-                }
-                else if(wed_chars->map != npc->map){
-                    npc->map->Msg(npc, "Stopping the wedding, "+util::ucfirst(wed_chars->SourceName())+" left the map!");
-                    npc->marriage_state = 20;
-                    break;
-                }
-                else if(!wed_chars->online){
-                    npc->map->Msg(npc, "Stopping the wedding, "+util::ucfirst(wed_chars->SourceName())+" isn't online!");
-                    npc->marriage_state = 20;
-                    break;
-                }
-                else{
-                    wed_char[i] = wed_chars;
-                }
-            }
+				if(!wed_chars->online)
+				{
+					npc->map->Msg(npc, "Stopping the wedding, "+util::ucfirst(wed_chars->SourceName())+" isn't online!");
+					npc->marriage_state = 20;
+					break;
+				}
+				
+				wed_char[i] = wed_chars;
+			}
 
-            if (npc->marriage_state == 2){
-                msg = "We are here at the invitation of "+util::ucfirst(wed_char[0]->real_name)+" and "+util::ucfirst(wed_char[1]->real_name)+", who have come before us to join together in marriage.";
+			if (npc->marriage_state == 2)
+			{
+				msg = "We are here at the invitation of "+ util::ucfirst(wed_char[0]->real_name) + " and " + util::ucfirst(wed_char[1]->real_name)+ ", who have come before us to join together in marriage.";
+			}
+			else if (npc->marriage_state == 3)
+			{
+				msg = "Their relationship is based on love, respect, and a determination to face the future together in health or sickness, in joy and sorrow.";
+			}
+			else if (npc->marriage_state == 4 || npc->marriage_state == 8)
+			{
+				int i = npc->marriage_state > 4 ? 1 : 0;
+				int ii = i > 0 ? 0 : 1;
 
-            }else if (npc->marriage_state == 3) msg = "Their relationship is based on love, respect, and a determination to face the future together in health or sickness, in joy and sorrow.";
-            else if (npc->marriage_state == 4 || npc->marriage_state == 8){
-                int i = npc->marriage_state > 4 ? 1 : 0;
-                int ii = i > 0 ? 0 : 1;
+				msg = util::ucfirst(wed_char[i]->real_name)+", do you take "+util::ucfirst(wed_char[ii]->real_name)+" to be your partner, and promise to love, comfort and stay together as long as you both shall live?";
 
-                msg = util::ucfirst(wed_char[i]->real_name)+", do you take "+util::ucfirst(wed_char[ii]->real_name)+" to be your partner, and promise to love, comfort and stay together as long as you both shall live?";
+				PacketBuilder builder(PACKET_PRIEST, PACKET_REPLY);
+				builder.AddChar(PRIEST_REQUEST);
+				wed_char[i]->Send(builder);
+			}
+			else if (npc->marriage_state == 7 || npc->marriage_state == 11)
+			{
+				npc->marriage_state = 20;
+				npc->map->Msg(npc, "One of the partners didn't accept the proposal!");
+			}
+			else if (npc->marriage_state == 12)
+			{
+				msg = "Let these rings be given and received as a token of your affection, sincerity and trust in one another.";
+			}
+			else if (npc->marriage_state == 13)
+			{
+				msg = "Please place these rings on eachothers finger";
+				for(int i = 0; i<=1; i++)
+				{
+					wed_char[i]->AddItem(int(npc->map->world->config["WeddingRing"]), 1);
 
-                PacketBuilder builder(PACKET_PRIEST, PACKET_REPLY);
-                builder.AddChar(PRIEST_REQUEST);
-                wed_char[i]->Send(builder);
+					PacketBuilder builder(PACKET_ITEM, PACKET_OBTAIN, 6);
+					builder.AddShort(int(npc->map->world->config["WeddingRing"]));
+					builder.AddThree(1);
+					builder.AddChar(static_cast<unsigned char>(wed_char[i]->weight));
+					wed_char[i]->Send(builder);
 
-            }
-            else if (npc->marriage_state == 7 || npc->marriage_state == 11){
-                npc->marriage_state = 20;
-                npc->map->Msg(npc, "One of the partners didn't accept the proposal!");
-            }
-            else if (npc->marriage_state == 12) msg = "Let these rings be given and received as a token of your affection, sincerity and trust in one another.";
-            else if (npc->marriage_state == 13){
-                msg = "Please place these rings on eachothers finger";
-                for(int i = 0; i<=1; i++){
-                    wed_char[i]->AddItem(int(npc->map->world->config["WeddingRing"]), 1);
+					wed_char[i]->StatusMsg("You received a ring!");
+					wed_char[i]->partner = util::lowercase(wed_char[i]->fiance);
+					wed_char[i]->fiance = "";
+				}
+			}
+			else if (npc->marriage_state == 14)
+			{
+				msg = util::ucfirst(wed_char[0]->SourceName()) + " and " + util::ucfirst(wed_char[1]->SourceName()) + " have consented together in marriage. And are now partners for as long you both shall live.";
+			}
+			else if (npc->marriage_state >= 15 && npc->marriage_state <= 17)
+			{
+				if(npc->marriage_state == 15)
+					msg = "Congratulations to the couple!";
 
-                    PacketBuilder builder(PACKET_ITEM, PACKET_OBTAIN, 6);
-                    builder.AddShort(int(npc->map->world->config["WeddingRing"]));
-                    builder.AddThree(1);
-                    builder.AddChar(static_cast<unsigned char>(wed_char[i]->weight));
-                    wed_char[i]->Send(builder);
-
-                    wed_char[i]->StatusMsg("You received a ring!");
-                    wed_char[i]->partner = util::lowercase(wed_char[i]->fiance);
-                    wed_char[i]->fiance = "";
-
-                }
-            }
-            else if (npc->marriage_state == 14) msg = util::ucfirst(wed_char[0]->SourceName())+" and "+util::ucfirst(wed_char[1]->SourceName())+" have consented together in marriage. And are now partners for as long you both shall live.";
-            else if (npc->marriage_state >= 15 && npc->marriage_state <= 17){
-                if(npc->marriage_state == 15)
-                    msg = "Congratulations to the couple!";
-
-                for(int i =0; i <=1; i++){
-                    wed_char[i]->Effect(util::to_int(util::explode(',', npc->map->world->config["WeddingEffects"])[npc->marriage_state-15]));
-                }
-                npc->marriage_timer = static_cast<int>(now) + 2; // speed up for the effects
-            }
-            if (msg != "")
-                npc->map->Msg(npc, msg);
-        }
+				for(int i =0; i <=1; i++)
+				{
+					wed_char[i]->Effect(util::to_int(util::explode(',', npc->map->world->config["WeddingEffects"])[npc->marriage_state-15]));
+				}
+				npc->marriage_timer = static_cast<int>(now) + 2; // speed up for the effects
+			}
+			if (msg != "")
+				npc->map->Msg(npc, msg);
+		}
 	}
-	if(npc->marriage_state > 0){
-        TimeEvent *event = new TimeEvent(npc_wedding, npc, 1.0, 1);
-        npc->map->world->timer.Register(event);
-        //npc->map->Msg(npc, util::to_string(npc->marriage_state));
-    }
+
+	if(npc->marriage_state > 0)
+	{
+		TimeEvent *event = new TimeEvent(npc_wedding, npc, 1.0, 1);
+		npc->map->world->timer.Register(event);
+		//npc->map->Msg(npc, util::to_string(npc->marriage_state));
+	}
 }
 
 void NPC::Wedding()
 {
-    TimeEvent *event = new TimeEvent(npc_wedding, this, 1.0, 1);
-    this->map->world->timer.Register(event);
+	TimeEvent *event = new TimeEvent(npc_wedding, this, 1.0, 1);
+	this->map->world->timer.Register(event);
 }
 
 #undef vd

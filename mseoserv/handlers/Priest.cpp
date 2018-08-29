@@ -24,7 +24,8 @@ namespace Handlers
             reply.SetID(PACKET_MUSIC, PACKET_PLAYER);
             reply.AddShort(util::to_int(character->world->config["WeddingMusic"]));
 
-            for(Character * ch : character->map->characters){
+            for (Character * ch : character->map->characters)
+            {
                 ch->Send(reply);
             }
         }
@@ -37,15 +38,19 @@ namespace Handlers
 
         if (character->npc_type == ENF::Priest)
         {
-            if (character->world->GetCharacter(character->npc->marriage_partner[0]) == character){
+            if (character->world->GetCharacter(character->npc->marriage_partner[0]) == character)
+            {
                 character->npc->marriage_state = 7; // the Wedding function will bump this to 8 upon call
                 character->map->Msg(character, "Yes, I do.", true);
             }
-            else if (character->world->GetCharacter(character->npc->marriage_partner[1]) == character){
+            else if (character->world->GetCharacter(character->npc->marriage_partner[1]) == character)
+            {
                 character->npc->marriage_state = 11;
 
                 character->map->Msg(character, "Yes, I do.", true);
-            }else{
+            }
+            else
+            {
                 character->npc->marriage_state = 20;
             }
         }
@@ -53,7 +58,6 @@ namespace Handlers
 
     void Priest_Request(Character *character, PacketReader &reader)
     {
-
         if (character->npc_type == ENF::Priest)
         {
             reader.GetInt();
