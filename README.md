@@ -1,9 +1,9 @@
 # MSEOSERV
 EOSERV source modified for use with Microsoft Visual Studio
 
-This project is based on the source code from the EOSERV project, available at https://eoserv.net/.
+This is a fork of the EOSERV project available at https://eoserv.net/
 
-The original source used for this project was cloned from rev 532 of the EOSERV source code.
+The original source used for this project was forked from rev 532 of the EOSERV source code.
 
 ### Additional Configuration - Debugging with Visual Studio
 
