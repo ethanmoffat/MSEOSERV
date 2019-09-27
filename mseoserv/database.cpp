@@ -400,7 +400,7 @@ void Database::Close()
 	}
 }
 
-Database_Result Database::RawQuery(const char* query, bool tx_control)
+Database_Result Database::RawQuery(const char* query, bool tx_control, bool prepared)
 {
 	if (!this->connected)
 	{
@@ -410,6 +410,10 @@ Database_Result Database::RawQuery(const char* query, bool tx_control)
 	std::size_t query_length = std::strlen(query);
 
 	Database_Result result;
+
+#ifndef DATABASE_SQLSERVER
+	(void)prepared;
+#endif
 
 #ifdef DATABASE_DEBUG
 	Console::Dbg("%s", query);
@@ -611,7 +615,9 @@ Database_Result Database::RawQuery(const char* query, bool tx_control)
 #ifdef DATABASE_SQLSERVER
 		case SqlServer:
 		{
-			SQLRETURN ret = SQLExecDirect(this->impl->hstmt, (SQLCHAR*)query, SQL_NTS);
+			SQLRETURN ret = prepared
+				? SQLExecute(this->impl->hstmt)
+				: SQLExecDirect(this->impl->hstmt, (SQLCHAR*)query, SQL_NTS);
 
 			if (ret == SQL_SUCCESS)
 			{
@@ -709,10 +715,17 @@ Database_Result Database::Query(const char *format, ...)
 	std::string finalquery;
 	int tempi;
 	char *tempc;
+
+#ifndef DATABASE_SQLSERVER
 	char *escret;
+#endif
 
 #ifdef DATABASE_MYSQL
 	unsigned long esclen;
+#endif
+
+#ifdef DATABASE_SQLSERVER
+	unsigned int paramNdx = 0;
 #endif
 
 	for (const char *p = format; *p != '\0'; ++p)
@@ -751,11 +764,27 @@ Database_Result Database::Query(const char *format, ...)
 #endif // DATABASE_SQLITE
 
 #ifdef DATABASE_SQLSERVER
-		case SqlServer:
-			//todo: query SQL server
-			break;
+				case SqlServer:
+					tempi = strlen(tempc);
+					SQLBindParameter(
+						this->impl->hstmt,
+						paramNdx++,
+						SQL_PARAM_INPUT,
+						SQL_C_CHAR,
+						SQL_CHAR,
+						tempi,
+						0,
+						tempc,
+						0,
+						NULL);
+					finalquery += '?';
+					break;
 #endif // DATABASE_SQLSERVER
 			}
+		}
+		else if (*p == '`' && this->engine == SqlServer)
+		{
+			// remove backticks for SqlServer
 		}
 		else
 		{
@@ -765,7 +794,22 @@ Database_Result Database::Query(const char *format, ...)
 
 	va_end(ap);
 
-	return this->RawQuery(finalquery.c_str());
+	bool prepared = false;
+
+#ifdef DATABASE_SQLSERVER
+	SQLRETURN ret = SQLPrepare(this->impl->hstmt, (SQLCHAR*)(finalquery.c_str()), SQL_NTS);
+	if (ret != SQL_SUCCESS)
+	{
+		HandleSqlServerError(SQL_HANDLE_STMT, this->impl->hstmt, ret, Console::Err);
+		throw Database_QueryFailed("Unable to prepare parameter-bound query for execution");
+	}
+
+	prepared = true;
+#endif
+
+	return this->RawQuery(finalquery.c_str(),
+		false, // transaction control
+		prepared);
 }
 
 std::string Database::Escape(const std::string& raw)
@@ -799,6 +843,7 @@ std::string Database::Escape(const std::string& raw)
 #ifdef DATABASE_SQLSERVER
 		case SqlServer:
 			//todo: escape query string
+			result = raw;
 			break;
 #endif // DATABASE_SQLSERVER
 	}
