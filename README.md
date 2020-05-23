@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This project is deprecated in favor of etheos: https://github.com/EndlessOpenSource/etheos
+
 # MSEOSERV
 EOSERV source modified for use with Microsoft Visual Studio
 
